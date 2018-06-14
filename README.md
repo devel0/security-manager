@@ -13,6 +13,14 @@ Webapi + webapp personal wallet cloud
   - password ( real random ) to protect against internet face ( browser can store that password )
   - pin ( 4 numbers ) to protect against wallet use ( browser can't store that pin )
 
+## screenshoots
+
+<img src="doc/Selection_079.png" width=250/>
+
+<img src="doc/Selection_080.png" width=180/>
+
+<img src="doc/Selection_081.png" width=400/>
+
 ## prerequisites
 
 - build [dotnet bionic](https://github.com/devel0/docker-dotnet/blob/bionic/README.md)
