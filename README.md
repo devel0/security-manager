@@ -168,7 +168,7 @@ http {
 }
 ```
 
-- /etc/nginx/conf.d/sec0.conf
+- `/etc/nginx/conf.d/sec0.conf`
 
 ```
 server {
