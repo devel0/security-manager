@@ -1,0 +1,2 @@
+- bootstrap 4 boilerplate index.htm
+- npm install --save @types/jquery

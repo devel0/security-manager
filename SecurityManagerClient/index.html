@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="bower_components/bootstrap4/dist/css/bootstrap.min.css">
+
+  <!-- https://notifyjs.jpillora.com/ -->
+  <link rel="stylesheet" href="bower_components/notifyjs/dist/styles/metro/notify-metro.css">
+
+  <!-- Font-Awesome -->
+  <link rel="stylesheet" href="bower_components/Font-Awesome/web-fonts-with-css/css/fontawesome-all.min.css">
+
+  <!-- Site css -->
+  <link rel="stylesheet" href="site.css">
+
+  <title>Security Manager web client</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <div class="container-fluid js-main-title">
+      <br/>
+      <h1>Security Manager</h1>
+    </div>
+
+    <!-- js-main -->
+    <div class="container-fluid collapse js-part js-main">
+      <div class="row">
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary js-create-btn">Create</button>
+        </div>
+        <div class="col">
+          <div class="input-group">
+            <input type="text" class="form-control" id="credshortlistfilter" placeholder="Search" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" id="credshortlistfilterclear" type="button">x</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <div class="table-container">
+            <div id="cred-short-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- js-cred -->
+    <div class="container-fluid js-part js-cred-edit collapse">
+      <hr/>
+      <h3>Credentials editor</h3>
+
+      <!-- credentials tools -->
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col">
+          <button type="button" class="btn btn-success js-cred-save-btn">
+            <i class="fas fa-save"></i> Save changes</button>
+          <button type="button" class="btn btn-danger js-cred-delete-btn">
+            <i class="fas fa-trash"></i> Remove</button>
+          <button type="button" class="btn btn-light js-cred-discardbtn">
+            <i class="fas fa-times"></i> Close</button>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-name-box">
+            <b>Name</b>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="cred-name-box" />
+        </div>
+      </div>
+
+      <!-- URL -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <b>URL</b>
+          <i class="fas fa-globe ml-3"></i>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="cred-link-box" />
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-username-box">
+            <b>Username</b>
+            <i class="fas fa-user ml-3"></i>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="cred-username-box" />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-email-box">
+            <b>Email</b>
+            <i class="fas fa-envelope ml-3"></i>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" id="cred-email-box" />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label>
+            <b>Password</b>
+            <i class="fas fa-key ml-3"></i>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <input type="text" id="cred-pass-box" style="width:100%" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-primary mt-1 js-pwd-clip" data-clipboard-target="#cred-pass-box">
+                <i class="fas fa-clipboard"></i> Copy to clipboard</button>              
+              <button type="button" class="btn btn-primary mt-1" id='pwd-regen-btn'>
+                <i class="fas fa-recycle"></i> Regenerate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-notes-box">
+            <b>Notes</b>
+            <i class="fas fa-file-alt ml-3"></i>
+          </label>
+        </div>
+        <div class="col">
+          <textarea style="width:100%; height:200px" id='cred-notes-box'></textarea>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- js-login -->
+    <div class="container-fluid collapse js-part js-login">
+      <div class="row">
+        <div class="col">
+          <h2>Login</h2>
+          <form id='login-form'>
+            <div class="form-group">
+              <label for="login-password-box">Password</label>
+              <input type="password" class="form-control" id="login-password-box" placeholder="Password" />
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Store</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- js-pin -->
+    <div class="container-fluid collapse js-part js-login">
+      <div class="row">
+        <div class="col">
+          <label for="pin-box">Pin</label>
+          <label id="pin-mask"></label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-auto"></div>
+        <div class="col">
+          <input type="button" class="btn btn-pin" id="pin1-btn" value="1" />
+          <input type="button" class="btn btn-light btn-pin" id="pin2-btn" value="2" />
+          <input type="button" class="btn btn-light btn-pin" id="pin3-btn" value="3" />
+        </div>
+        <div class="col-auto"></div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-auto"></div>
+        <div class="col">
+          <input type="button" class="btn btn-light btn-pin" id="pin4-btn" value="4" />
+          <input type="button" class="btn btn-light btn-pin" id="pin5-btn" value="5" />
+          <input type="button" class="btn btn-light btn-pin" id="pin6-btn" value="6" />
+        </div>
+        <div class="col-auto"></div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-auto"></div>
+        <div class="col">
+          <input type="button" class="btn btn-light btn-pin" id="pin7-btn" value="7" />
+          <input type="button" class="btn btn-light btn-pin" id="pin8-btn" value="8" />
+          <input type="button" class="btn btn-light btn-pin" id="pin9-btn" value="9" />
+        </div>
+        <div class="col-auto"></div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-auto"></div>
+        <div class="col">
+          <input type="button" class="btn btn-light btn-pin" style="margin-left: 65px" id="pin0-btn" value="0" />
+        </div>
+        <div class="col-auto"></div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+    crossorigin="anonymous"></script>
+  <script src="bower_components/bootstrap4/dist/js/bootstrap.min.js"></script>
+
+  <!-- https://notifyjs.jpillora.com/ -->
+  <!--<script src="bower_components/notifyjs/dist/styles/metro/notify-metro.js"></script>-->
+  <script src="bower_components/notifyjs/dist/notify.js"></script>
+
+  <!-- https://github.com/pammacdotnet/Json-to-HTML-Table -->
+  <script src="bower_components/json-to-table/json-to-table.js"></script>
+
+  <!-- underscore -->
+  <script src="bower_components/underscore/underscore-min.js"></script>
+
+  <!-- https://github.com/zenorocha/clipboard.js -->
+  <script src="bower_components/clipboard/dist/clipboard.js"></script>
+
+  <!-- https://github.com/devel0/js-util -->
+  <script src="js-util.js"></script>
+
+  <!-- utils -->
+  <script src="utils.js"></script>
+
+  <!-- app -->
+  <script src="app.js"></script>
+</body>
+
+</html>

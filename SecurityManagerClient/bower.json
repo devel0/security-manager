@@ -1,0 +1,29 @@
+{
+  "name": "securitymanager",
+  "authors": [
+    "Lorenzo Delana <oss.devel@searchathing.com>"
+  ],
+  "description": "",
+  "main": "app.js",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^3.3.1",
+    "bootstrap4": "^4.1.0"
+  },
+  "dependencies": {
+    "notifyjs": "^0.4.2",
+    "json-to-table": "*",
+    "Font-Awesome": "^5.0.13",
+    "underscore": "^1.9.1",
+    "clipboard": "^2.0.1"
+  }
+}

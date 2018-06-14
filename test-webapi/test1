@@ -1,0 +1,16 @@
+#!/bin/bash
+
+url="http://localhost:5000"
+url="https://sec0.searchathing.com";
+api="Api/IsAuthValid"
+
+json=$(cat<<EOF
+{
+password: "test"
+}
+EOF
+)
+
+res=$(curl -v -s -H "Content-Type:application/json" -d "$json" $url/$api)
+
+echo $res

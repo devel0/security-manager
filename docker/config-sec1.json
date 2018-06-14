@@ -1,0 +1,7 @@
+{
+	"docker_networkname": "sec1",
+	"docker_ip": "10.10.0.62",
+	"docker_containername": "sec1",
+	"security_dbfile": "/security/sec1.json",
+	"external_url": "https://sec1.searchathing.com"
+}
