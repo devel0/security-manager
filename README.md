@@ -54,8 +54,8 @@ cd ./docker
 
 - prerequisites
   - [nodejs, local web server](https://github.com/devel0/docker-ubuntu/blob/db474a1a65638d42351bbefe318ffc47736b820b/Dockerfile#L21-L26)
-  - vscode ( suggested [extensions](https://github.com/devel0/knowledge/blob/master/tools/vscode-useful-extensions.md) )
-  - firefox ( debug [settings](https://github.com/devel0/knowledge/blob/master/webdevel/vscode-debug-firefox.md) )
+  - vscode ( suggested [extensions](https://github.com/devel0/knowledge/blob/daea0a3439467e882326ecc3a9e5fbd7d7b17441/tools/vscode-useful-extensions.md) )
+  - firefox ( debug [settings](https://github.com/devel0/knowledge/blob/daea0a3439467e882326ecc3a9e5fbd7d7b17441/webdevel/vscode-debug-firefox.md) )
 
 - vscode and start **webapi server**
 
@@ -82,3 +82,38 @@ and hit F5 `Launch localhost`
 
 - notes:
   - breakpoint will work on webapi and client javascript
+
+## code map
+
+### webapi ( server )
+
+|**section**|**description**|
+|---|---|
+| [Global](SecurityManagerWebapi/Global.cs) | path names and logging functions |
+| [LinuxHelper](SecurityManagerWebapi/LinuxHelper.cs) | unix syscall mapping through Mono.Posix.NETStandard net core library |
+| Startup,Program | standard from `dotnet new webapi` |
+| [Types/Common](SecurityManagerWebapi/Types/Common.cs) | common json request data structure |
+| [Types/CommonResponse](SecurityManagerWebapi/Types/CommonResponse.cs) | common json response data structure |
+| [Types/Config](SecurityManagerWebapi/Types/Config.cs) | dbfile structure - will json (de)serialized |
+| [Types/CredInfo](SecurityManagerWebapi/Types/CredInfo.cs) | base dbfile record type - credential record and json file locking add/remove record, save |
+| [Controllers/ApiController](SecurityManagerWebapi/Controllers/ApiController.cs) | server side api implementation |
+
+### js ( client )
+
+|**section**|**description**|
+|---|---|
+| [site.css](SecurityManagerClient/site.css) | website custom css |
+| [bower.json](SecurityManagerClient/bower.json) | file populated initially with `bower init` and then with `bower install dep --save` containing js libraries dependencies |
+| js-utils.js | js utils from [js-util.js](https://github.com/devel0/js-util/blob/master/src/js-util.js) |
+| [utils.js](SecurityManagerClient/utils.js) | minor app utils |
+| [app.js](SecurityManagerClient/app.js) | main client-side SPA app logic |
+| [index.html](SecurityManagerClient/index.html) | graphics markup |
+
+### docker ( container )
+
+|**section**|**description**|
+|---|---|
+| [replace-token-with](docker/replace-token-with) | c# util to replace text in files ( sed -i makes it difficult when escaping ) |
+| [config-sec0.json](docker/config-sec0.json) | example docker container config file ) |
+| [run.sh](docker/run.sh) | create docker container |
+| [entrypoint.sh](docker/entrypoint.sh) | every restart entry script that compile and install first time from source distro into binary and that start local web server + webapi server everytime |
