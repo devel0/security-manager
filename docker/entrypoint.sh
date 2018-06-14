@@ -37,6 +37,12 @@ if [ ! -e /root/.initialized ]; then
 	dotnet restore .
 	dotnet build -c Release .
 
+	echo
+	echo "---> building web client"
+	echo
+	cd /opt/securitymanager/SecurityManagerClient
+	bower install --allow-root
+
 	touch /root/.initialized
 fi
 
