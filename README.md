@@ -2,6 +2,20 @@
 
 Webapi + webapp personal wallet cloud 
 
+## Summary
+- [security manager](#security-manager)
+  * [motivations and architecture overview](#motivations-and-architecture-overview)
+  * [screenshoots](#screenshoots)
+  * [prerequisites](#prerequisites)
+  * [setup](#setup)
+  * [debug](#debug)
+  * [code map](#code-map)
+    + [webapi ( server )](#webapi--server-)
+    + [js ( client )](#js--client-)
+    + [docker ( container )](#docker--container-)
+  * [nginx config example](#nginx-config-example)
+  * [install execution example](#install-execution-example)
+
 ## motivations and architecture overview
 
 - don't want your password stored into external cloud
