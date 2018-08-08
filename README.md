@@ -94,6 +94,7 @@ and hit F5 `.NET Core Launch (console)` after Omnisharp initializes
 
 ```
 cd ./SecurityManagerClient
+bower install --allow-root
 code . &
 ws -p 80 --spa index.html
 ```
