@@ -183,7 +183,7 @@ $('.js-cred-save-btn').click(function (e) {
             if (checkApiInvalidAuth(data)) showPart('.js-login');
             else {
                 $.notify('data saved', 'success');
-                reloadCredShortList();
+                doFilter();
             }
         }
     );
