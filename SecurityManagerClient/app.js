@@ -108,6 +108,8 @@ $('#credshortlistfilterclear').click(function (e) {
     ctl[0].value = '';
     ctl.removeClass('filter-active');
     ctl.focus();
+
+    doFilter();
 });
 
 //-----------------------
