@@ -209,6 +209,11 @@ $('.js-cred-save-btn').click(function (e) {
             if (checkApiError(data)) return;
             if (checkApiInvalidAuth(data)) showPart('.js-login');
             else {
+                aliases.push( {
+                    name: $('#cred-name-box')[0].value,
+                    username: $('#cred-username-box')[0].value,
+                    email: $('#cred-email-box')[0].value
+                });
                 $.notify('data saved', 'success');
                 doFilter();
             }
