@@ -3,9 +3,13 @@
 Webapi + webapp personal wallet cloud 
 
 ## Summary
+
 - [security manager](#security-manager)
+  * [Summary](#summary)
   * [motivations and architecture overview](#motivations-and-architecture-overview)
   * [screenshoots](#screenshoots)
+  * [features](#features)
+  * [todo](#todo)
   * [prerequisites](#prerequisites)
   * [setup](#setup)
   * [debug](#debug)
@@ -34,6 +38,18 @@ Webapi + webapp personal wallet cloud
 <img src="doc/Selection_080.png" width=250/>
 
 <img src="doc/Selection_081.png" width=400/>
+
+## features
+
+- short list credentials ( service, username, email )
+- filter list credentials by any field ( note included )
+- edit credential ( add, edit, remove ) with changes detect and warn on unsave when close
+- password copy to clipboard
+- password regenerate
+
+## todo
+
+- password features per entry ( max length, characters, etc ) that influence item regenerate password function
 
 ## prerequisites
 
