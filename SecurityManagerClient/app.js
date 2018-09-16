@@ -154,7 +154,6 @@ $('.js-create-btn').click(function (e) {
     gotoState('edit');
 });
 
-
 //-----------------
 // EDIT CREDENTIAL
 //-----------------
@@ -176,22 +175,7 @@ function openCred(e) {
                 $('#cred-username-box')[0].value = data.cred.username;
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
-                $('#cred-notes-box')[0].value = data.cred.notes;
-                
-                new Awesomplete($('#cred-name-box')[0], {
-                    minChars: 1,
-                    list: _.map(_.filter(aliases, (x) => x.name != null), (x) => x.name)
-                });
-
-                new Awesomplete($('#cred-username-box')[0], {
-                    minChars: 1,
-                    list: _.map(_.filter(aliases, (x) => x.username != null), (x) => x.username)
-                });
-
-                new Awesomplete($('#cred-email-box')[0], {
-                    minChars: 1,
-                    list: _.map(_.filter(aliases, (x) => x.email != null), (x) => x.email)
-                });
+                $('#cred-notes-box')[0].value = data.cred.notes;                            
 
                 credorig = JSON.stringify(buildCredObj());
 
@@ -201,6 +185,23 @@ function openCred(e) {
                 $.notify('invalid login', 'error');
                 pin = '';
             }
+            
+            // setup completion
+
+            new Awesomplete($('#cred-name-box')[0], {
+                minChars: 1,
+                list: _.map(_.filter(aliases, (x) => x.name != null), (x) => x.name)
+            });
+
+            new Awesomplete($('#cred-username-box')[0], {
+                minChars: 1,
+                list: _.map(_.filter(aliases, (x) => x.username != null), (x) => x.username)
+            });
+
+            new Awesomplete($('#cred-email-box')[0], {
+                minChars: 1,
+                list: _.map(_.filter(aliases, (x) => x.email != null), (x) => x.email)
+            });
         });
 
     return false;
