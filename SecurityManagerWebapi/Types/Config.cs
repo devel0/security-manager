@@ -27,11 +27,11 @@ namespace SecurityManagerWebapi
                 if (string.IsNullOrEmpty(cred.GUID))
                 {
                     cred.GUID = Guid.NewGuid().ToString();
-                    
+
                     // trim spaces
                     cred.Name = cred.Name?.Trim();
                     cred.Email = cred.Email?.Trim();
-                    cred.Password = cred.Password?.Trim();                    
+                    cred.Password = cred.Password?.Trim();
 
                     Credentials.Add(cred);
                 }
@@ -71,7 +71,7 @@ namespace SecurityManagerWebapi
                 nfo = Credentials.FirstOrDefault(w => w.GUID == guid);
                 if (nfo != null) Credentials.Remove(nfo);
             }
-        }        
+        }
 
         public List<CredShort> GetCredShortList(string filter)
         {
@@ -82,7 +82,21 @@ namespace SecurityManagerWebapi
             lock (lck)
             {
                 res = Credentials.Where(r => new[] { r.Name, r.Url, r.Username, r.Email, r.Notes }.MatchesFilter(filter))
-                .Select(w => new CredShort() { GUID = w.GUID, Name = w.Name, Username = w.Url, Email = w.Email, Url = w.Url })
+                .Select(w => new CredShort() { GUID = w.GUID, Name = w.Name, Username = w.Username, Email = w.Email, Url = w.Url })
+                .ToList();
+            }
+
+            return res;
+        }
+
+        public List<Alias> GetAliases()
+        {
+            List<Alias> res;
+
+            lock (lck)
+            {
+                res = Credentials
+                .Select(w => new Alias() { Name = w.Name, Username = w.Username, Email = w.Email }).Distinct()
                 .ToList();
             }
 

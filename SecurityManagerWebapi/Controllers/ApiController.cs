@@ -153,6 +153,25 @@ namespace SecurityManagerWebapi.Controllers
         }
 
         [HttpPost]
+        public CommonResponse Aliases(string password, int pin)
+        {
+            try
+            {
+                if (!CheckAuth(password, pin)) return InvalidAuthResponse();
+
+                var response = new AliasResponse();
+
+                response.Aliases = config.GetAliases();
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return ErrorResponse(ex.Message);
+            }
+        }
+
+        [HttpPost]
         public CommonResponse IsAuthValid(string password, int pin)
         {
             try
@@ -164,7 +183,7 @@ namespace SecurityManagerWebapi.Controllers
             {
                 return ErrorResponse(ex.Message);
             }
-        }
+        }        
 
     }
 }

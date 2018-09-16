@@ -14,6 +14,9 @@ let credorig = null;
 // caches loaded data
 let credshortlistdata = null;
 
+// caches aliases
+let aliases = null;
+
 // control page navigation state
 let state = '';
 
@@ -75,10 +78,30 @@ function reloadCredShortList(filter = '') {
         });
 }
 
+//--------------
+// LOAD ALIASES
+//--------------
+function reloadAliases() {
+    $.post(urlbase + '/Api/Aliases',
+        {
+            password: pwd,
+            pin: pin
+        },
+        function (data, status, jqXHR) {
+            if (checkApiError(data)) return;
+            if (checkApiSuccessful(data)) {
+                aliases = data.aliases;
+            }
+            else {
+                $.notify('invalid login', 'error');
+                pin = '';
+            }
+        });
+}
+
 //------------------
 // CRED LIST FILTER 
 //------------------
-
 function doFilter() {
     if (filterTimer != null) clearTimeout(filterTimer);
 
@@ -154,6 +177,21 @@ function openCred(e) {
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
                 $('#cred-notes-box')[0].value = data.cred.notes;
+                
+                new Awesomplete($('#cred-name-box')[0], {
+                    minChars: 1,
+                    list: _.map(_.filter(aliases, (x) => x.name != null), (x) => x.name)
+                });
+
+                new Awesomplete($('#cred-username-box')[0], {
+                    minChars: 1,
+                    list: _.map(_.filter(aliases, (x) => x.username != null), (x) => x.username)
+                });
+
+                new Awesomplete($('#cred-email-box')[0], {
+                    minChars: 1,
+                    list: _.map(_.filter(aliases, (x) => x.email != null), (x) => x.email)
+                });
 
                 credorig = JSON.stringify(buildCredObj());
 
@@ -172,8 +210,7 @@ function openCred(e) {
 // SAVE CRED EDIT
 //----------------
 $('.js-cred-save-btn').click(function (e) {
-    if (isEmptyCredObj())
-    {
+    if (isEmptyCredObj()) {
         $.notify('cannot save empty', 'warning');
         return;
     }
@@ -254,8 +291,10 @@ $.post(
         if (checkApiError(data)) return;
         if (checkApiInvalidAuth(data))
             gotoState('login');
-        else
+        else {
+            reloadAliases();
             reloadCredShortList();
+        }
     }
 );
 

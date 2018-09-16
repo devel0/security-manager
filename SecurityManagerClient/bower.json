@@ -17,7 +17,8 @@
   ],
   "devDependencies": {
     "jquery": "^3.3.1",
-    "bootstrap4": "^4.1.0"
+    "bootstrap4": "^4.1.0",
+    "awesomplete": "^1.1.2"
   },
   "dependencies": {
     "notifyjs": "^0.4.2",
