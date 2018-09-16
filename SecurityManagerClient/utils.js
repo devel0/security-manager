@@ -3,7 +3,7 @@ function gotoState(newstate) {
     state = newstate;
     switch (state) {
         case 'login': showPart('.js-login'); break;
-        case 'edit': showPart('.js-cred-edit'); break;
+        case 'edit': showPart('.js-cred-edit'); $('#cred-name-box').focus(); break;
         case 'list': showPart('.js-main'); break;
     }
 }
@@ -55,8 +55,8 @@ function checkPin() {
             function (data, status, jqXHR) {
                 if (checkApiError(data)) return;
                 if (checkApiSuccessful(data)) {
-                    $.notify('logged in', 'success');                                        
-                    savePassword();                    
+                    $.notify('logged in', 'success');
+                    savePassword();
                     showPart('.js-main');
                     reloadCredShortList();
                 }
@@ -86,4 +86,15 @@ function buildCredObj() {
         Password: $('#cred-pass-box')[0].value,
         Notes: $('#cred-notes-box')[0].value
     };
+}
+
+// isEmptyCredObj
+function isEmptyCredObj() {
+    return $.trim($('#cred-name-box')[0].value) == "" &&
+        $.trim($('#cred-link-box')[0].value) == "" &&
+        $.trim($('#cred-username-box')[0].value) == "" &&
+        $.trim($('#cred-email-box')[0].value) == "" &&
+        $.trim($('#cred-pass-box')[0].value) == "" &&
+        $.trim($('#cred-notes-box')[0].value) == "";
+
 }

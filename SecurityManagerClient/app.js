@@ -51,15 +51,17 @@ function reloadCredShortList(filter = '') {
                 credshortlistdata = data.credShortList;
 
                 let html = '<table class="table table-striped">';
-                html += '<thead><tr><th scope="col">Service</th></tr></thead>';
-                html += '<thead><tr><th scope="col">Username</th></tr></thead>';
-                html += '<thead><tr><th scope="col">Email</th></tr></thead>';
+                html += '<thead><tr>';
+                html += '<th scope="col">Service</th>';
+                html += '<th scope="col">Username</th>';
+                html += '<th scope="col">Email</th>';
+                html += '</tr></thead>';
                 html += '<tbody>';
                 _.each(_.sortBy(credshortlistdata, (x) => x.name), (x) => {
                     html += '<tr>';
-                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.name + '</a></td>';
-                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.username + '</a></td>';
-                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.email + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.name == null) ? '' : x.name) + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.username == null) ? '' : x.username) + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.email == null) ? '' : x.email) + '</a></td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';
@@ -144,16 +146,16 @@ function openCred(e) {
         },
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
-            if (checkApiSuccessful(data)) {                
+            if (checkApiSuccessful(data)) {
                 $('#cred-guid')[0].value = data.cred.guid;
-                $('#cred-name-box')[0].value = data.cred.name;                
+                $('#cred-name-box')[0].value = data.cred.name;
                 $('#cred-link-box')[0].value = data.cred.url;
                 $('#cred-username-box')[0].value = data.cred.username;
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
                 $('#cred-notes-box')[0].value = data.cred.notes;
 
-                credorig = JSON.stringify(buildCredObj());                
+                credorig = JSON.stringify(buildCredObj());
 
                 gotoState('edit');
             }
@@ -170,10 +172,16 @@ function openCred(e) {
 // SAVE CRED EDIT
 //----------------
 $('.js-cred-save-btn').click(function (e) {
+    if (isEmptyCredObj())
+    {
+        $.notify('cannot save empty', 'warning');
+        return;
+    }
+
     $.post(
         urlbase + '/Api/SaveCred',
         {
-            password: pwd, pin: pin,            
+            password: pwd, pin: pin,
             cred: buildCredObj()
         },
         function (data, status, jqXHR) {
