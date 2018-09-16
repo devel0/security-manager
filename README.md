@@ -31,7 +31,7 @@ Webapi + webapp personal wallet cloud
 
 <img src="doc/Selection_079.png" width=250/>
 
-<img src="doc/Selection_080.png" width=180/>
+<img src="doc/Selection_080.png" width=250/>
 
 <img src="doc/Selection_081.png" width=400/>
 
