@@ -72,10 +72,11 @@ namespace SecurityManagerWebapi
                 var attrs = File.GetAttributes(AppConfigPathfilename);
                 Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(AppConfigPathfilename));
 
-                // backward : ensure guid
+                // backward : ensure guid, createtimestamp
                 foreach (var x in Config.Credentials)
                 {
                     if (string.IsNullOrEmpty(x.GUID)) x.GUID = Guid.NewGuid().ToString("N");
+                    if (x.CreateTimestamp == null) x.CreateTimestamp = DateTime.UtcNow;
                 }
             }
         }

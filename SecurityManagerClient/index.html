@@ -158,6 +158,29 @@
         </div>
       </div>
 
+      <!-- Create timestamp -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-notes-box">
+            <b>Created</b>
+          </label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" readonly id="cred-create-timestamp" />
+        </div>
+      </div>
+
+      <!-- Create timestamp -->
+      <div class="row mt-2">
+        <div class="col-4 text-right">
+          <label for="cred-notes-box">
+            <b>Modified</b>
+          </label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" readonly id="cred-modify-timestamp" />
+        </div>
+      </div>
 
     </div>
 
@@ -246,6 +269,9 @@
 
   <!-- https://leaverou.github.io/awesomplete/ -->
   <script src="bower_components/awesomplete/awesomplete.min.js"></script>
+
+  <!-- http://momentjs.com -->
+  <script src="bower_components/moment/min/moment-with-locales.min.js"></script>
 
   <!-- https://github.com/devel0/js-util -->
   <script src="js-util.js"></script>

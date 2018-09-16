@@ -176,6 +176,8 @@ function openCred(e) {
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
                 $('#cred-notes-box')[0].value = data.cred.notes;                            
+                $('#cred-create-timestamp')[0].value = (data.cred.createTimestamp != null) ? moment(data.cred.createTimestamp).format('l LT') : "";
+                $('#cred-modify-timestamp')[0].value = (data.cred.modifyTimestamp != null) ? moment(data.cred.modifyTimestamp).format('l LT') : "";
 
                 credorig = JSON.stringify(buildCredObj());
 

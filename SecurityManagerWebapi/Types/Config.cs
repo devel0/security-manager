@@ -32,6 +32,7 @@ namespace SecurityManagerWebapi
                     cred.Name = cred.Name?.Trim();
                     cred.Email = cred.Email?.Trim();
                     cred.Password = cred.Password?.Trim();
+                    cred.CreateTimestamp = DateTime.UtcNow;
 
                     Credentials.Add(cred);
                 }
@@ -47,7 +48,8 @@ namespace SecurityManagerWebapi
                     q.Email = cred.Email?.Trim();
                     q.Password = cred.Password?.Trim();
                     q.Notes = cred.Notes;
-                }
+                    q.ModifyTimestamp = DateTime.UtcNow;
+                }                
             }
             Save();
         }
