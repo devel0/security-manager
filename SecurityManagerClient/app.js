@@ -184,24 +184,7 @@ function openCred(e) {
             else {
                 $.notify('invalid login', 'error');
                 pin = '';
-            }
-            
-            // setup completion
-
-            new Awesomplete($('#cred-name-box')[0], {
-                minChars: 1,
-                list: _.map(_.filter(aliases, (x) => x.name != null), (x) => x.name)
-            });
-
-            new Awesomplete($('#cred-username-box')[0], {
-                minChars: 1,
-                list: _.map(_.filter(aliases, (x) => x.username != null), (x) => x.username)
-            });
-
-            new Awesomplete($('#cred-email-box')[0], {
-                minChars: 1,
-                list: _.map(_.filter(aliases, (x) => x.email != null), (x) => x.email)
-            });
+            }                    
         });
 
     return false;
