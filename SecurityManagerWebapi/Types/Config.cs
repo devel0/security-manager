@@ -20,23 +20,25 @@ namespace SecurityManagerWebapi
             if (Credentials == null) Credentials = new List<CredInfo>();
         }
 
-        public void SaveCred(CredInfo cred, string credorigname)
+        public void SaveCred(CredInfo cred)
         {
             lock (lck)
             {
-                if (string.IsNullOrEmpty(credorigname))
+                if (string.IsNullOrEmpty(cred.GUID))
                 {
+                    cred.GUID = Guid.NewGuid().ToString();
+                    
                     // trim spaces
                     cred.Name = cred.Name?.Trim();
                     cred.Email = cred.Email?.Trim();
-                    cred.Password = cred.Password?.Trim();
+                    cred.Password = cred.Password?.Trim();                    
 
                     Credentials.Add(cred);
                 }
                 else
                 {
-                    var q = Credentials.FirstOrDefault(w => w.Name.Equals(credorigname.Trim(), StringComparison.CurrentCultureIgnoreCase));
-                    if (q == null) throw new Exception($"unable to find [{credorigname}] entry");
+                    var q = Credentials.FirstOrDefault(w => w.GUID == cred.GUID);
+                    if (q == null) throw new Exception($"unable to find [{cred.GUID}] entry");
 
                     q.Name = cred.Name?.Trim();
                     q.Email = cred.Email?.Trim();
@@ -50,23 +52,23 @@ namespace SecurityManagerWebapi
             Save();
         }
 
-        public CredInfo LoadCred(string name)
+        public CredInfo LoadCred(string guid)
         {
             CredInfo nfo;
             lock (lck)
             {
-                nfo = Credentials.FirstOrDefault(w => w.Name.Equals(name.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                nfo = Credentials.FirstOrDefault(w => w.GUID == guid);
             }
 
             return nfo;
         }
 
-        public void DeleteCred(string name)
+        public void DeleteCred(string guid)
         {
             CredInfo nfo;
             lock (lck)
             {
-                nfo = Credentials.FirstOrDefault(w => w.Name.Equals(name.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                nfo = Credentials.FirstOrDefault(w => w.GUID == guid);
                 if (nfo != null) Credentials.Remove(nfo);
             }
         }        
@@ -80,7 +82,7 @@ namespace SecurityManagerWebapi
             lock (lck)
             {
                 res = Credentials.Where(r => new[] { r.Name, r.Url, r.Username, r.Email, r.Notes }.MatchesFilter(filter))
-                .Select(w => new CredShort() { Name = w.Name, Url = w.Url })
+                .Select(w => new CredShort() { GUID = w.GUID, Name = w.Name, Username = w.Url, Email = w.Email, Url = w.Url })
                 .ToList();
             }
 

@@ -61,13 +61,13 @@ namespace SecurityManagerWebapi.Controllers
         #endregion
 
         [HttpPost]
-        public CommonResponse SaveCred(string password, int pin, string credorigname, CredInfo cred, bool isNew)
+        public CommonResponse SaveCred(string password, int pin, CredInfo cred)
         {
             try
             {
-                if (!CheckAuth(password, pin)) return InvalidAuthResponse();
+                if (!CheckAuth(password, pin)) return InvalidAuthResponse();                
 
-                config.SaveCred(cred, credorigname);
+                config.SaveCred(cred);
 
                 return SuccessfulResponse();
             }
@@ -98,7 +98,7 @@ namespace SecurityManagerWebapi.Controllers
 
 
         [HttpPost]
-        public CommonResponse LoadCred(string password, int pin, string name)
+        public CommonResponse LoadCred(string password, int pin, string guid)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var response = new CredInfoResponse();
 
-                response.Cred = config.LoadCred(name);
+                response.Cred = config.LoadCred(guid);
 
                 return response;
             }
@@ -117,13 +117,13 @@ namespace SecurityManagerWebapi.Controllers
         }
 
         [HttpPost]
-        public CommonResponse DeleteCred(string password, int pin, string name)
+        public CommonResponse DeleteCred(string password, int pin, string guid)
         {
             try
             {
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();                
 
-                config.DeleteCred(name);
+                config.DeleteCred(guid);
 
                 return SuccessfulResponse();
             }

@@ -78,6 +78,7 @@ for (i = 0; i <= 9; ++i) {
 // buildCredObj
 function buildCredObj() {
     return {
+        GUID: $('#cred-guid')[0].value,
         Name: $('#cred-name-box')[0].value,
         Url: $('#cred-link-box')[0].value,
         Username: $('#cred-username-box')[0].value,

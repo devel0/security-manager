@@ -25,7 +25,7 @@
   <div class="container-fluid">
 
     <div class="container-fluid js-main-title">
-      <br/>
+      <br />
       <h1>Security Manager</h1>
     </div>
 
@@ -55,7 +55,7 @@
 
     <!-- js-cred -->
     <div class="container-fluid js-part js-cred-edit collapse">
-      <hr/>
+      <hr />
       <h3>Credentials editor</h3>
 
       <!-- credentials tools -->
@@ -78,6 +78,7 @@
             <b>Name</b>
         </div>
         <div class="col">
+          <input type="hidden" id="cred-guid" />
           <input type="text" class="form-control" id="cred-name-box" />
         </div>
       </div>
@@ -133,7 +134,7 @@
           <div class="row">
             <div class="col">
               <button type="button" class="btn btn-primary mt-1 js-pwd-clip" data-clipboard-target="#cred-pass-box">
-                <i class="fas fa-clipboard"></i> Copy to clipboard</button>              
+                <i class="fas fa-clipboard"></i> Copy to clipboard</button>
               <button type="button" class="btn btn-primary mt-1" id='pwd-regen-btn'>
                 <i class="fas fa-recycle"></i> Regenerate</button>
             </div>

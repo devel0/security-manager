@@ -9,10 +9,10 @@ if (debugmode) {
 }
 
 // states if editing new or existing
-let editExistingCred = false;
+//let editExistingCred = false;
 
 // used to save existing with new name
-let credorigname = '';
+//let credorigname = '';
 
 // used to check changes
 let credorig = null;
@@ -57,11 +57,15 @@ function reloadCredShortList(filter = '') {
                 credshortlistdata = data.credShortList;
 
                 let html = '<table class="table table-striped">';
-                html += '<thead><tr><th scope="col">Name</th></tr></thead>';
+                html += '<thead><tr><th scope="col">Service</th></tr></thead>';
+                html += '<thead><tr><th scope="col">Username</th></tr></thead>';
+                html += '<thead><tr><th scope="col">Email</th></tr></thead>';
                 html += '<tbody>';
                 _.each(_.sortBy(credshortlistdata, (x) => x.name), (x) => {
                     html += '<tr>';
-                    html += '<td><a href="#edit" onclick="openCred(this);">' + x.name + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.name + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.username + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + x.email + '</a></td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';
@@ -118,8 +122,9 @@ $('#credshortlistfilterclear').click(function (e) {
 $('.js-create-btn').click(function (e) {
     editExistingCred = false;
 
-    credorigname = '';
+    //credorigname = '';
 
+    $('#cred-guid')[0].value = '';
     $('#cred-name-box')[0].value = '';
     $('#cred-link-box')[0].value = '';
     $('#cred-username-box')[0].value = '';
@@ -135,27 +140,26 @@ $('.js-create-btn').click(function (e) {
 // EDIT CREDENTIAL
 //-----------------
 function openCred(e) {
-    let name = e.text;
+    let guid = e;
 
     $.post(urlbase + '/Api/LoadCred',
         {
             password: pwd,
             pin: pin,
-            name: name
+            guid: guid
         },
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
-            if (checkApiSuccessful(data)) {
-                $('#cred-name-box')[0].value = data.cred.name;
-                credorigname = data.cred.name;
+            if (checkApiSuccessful(data)) {                
+                $('#cred-guid')[0].value = data.cred.guid;
+                $('#cred-name-box')[0].value = data.cred.name;                
                 $('#cred-link-box')[0].value = data.cred.url;
                 $('#cred-username-box')[0].value = data.cred.username;
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
                 $('#cred-notes-box')[0].value = data.cred.notes;
 
-                credorig = JSON.stringify(buildCredObj());
-                editExistingCred = true;
+                credorig = JSON.stringify(buildCredObj());                
 
                 gotoState('edit');
             }
@@ -175,10 +179,8 @@ $('.js-cred-save-btn').click(function (e) {
     $.post(
         urlbase + '/Api/SaveCred',
         {
-            password: pwd, pin: pin,
-            credorigname: credorigname,
-            cred: buildCredObj(),
-            isNew: !editExistingCred
+            password: pwd, pin: pin,            
+            cred: buildCredObj()
         },
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
@@ -228,7 +230,7 @@ $('.js-cred-delete-btn').click(function (e) {
             urlbase + '/Api/DeleteCred',
             {
                 password: pwd, pin: pin,
-                name: $('#cred-name-box')[0].value
+                guid: $('#cred-guid')[0].value
             },
             function (data, status, jqXHR) {
                 if (checkApiError(data)) return;
