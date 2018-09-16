@@ -161,7 +161,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var response = new AliasResponse();
 
-                response.Aliases = config.GetAliases();
+                response.Aliases = config.GetAliases().ToList();
 
                 return response;
             }

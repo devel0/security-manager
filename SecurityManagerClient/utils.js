@@ -59,6 +59,7 @@ function checkPin() {
                     savePassword();
                     showPart('.js-main');
                     reloadCredShortList();
+                    reloadAliases();
                 }
                 else {
                     $.notify('invalid login', 'error');

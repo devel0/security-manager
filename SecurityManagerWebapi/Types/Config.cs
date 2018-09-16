@@ -89,18 +89,38 @@ namespace SecurityManagerWebapi
             return res;
         }
 
-        public List<Alias> GetAliases()
-        {
-            List<Alias> res;
-
+        public IEnumerable<Alias> GetAliases()
+        {            
             lock (lck)
             {
-                res = Credentials
-                .Select(w => new Alias() { Name = w.Name, Username = w.Username, Email = w.Email }).Distinct()
-                .ToList();
-            }
+                var hsNames = new HashSet<string>();
+                var hsUsernames = new HashSet<string>();
+                var hsEmails = new HashSet<string>();
+                foreach (var x in Credentials)
+                {
+                    hsNames.Add(x.Name);
+                    hsUsernames.Add(x.Username);
+                    hsEmails.Add(x.Email);
+                }
 
-            return res;
+                var nEn = hsNames.GetEnumerator();
+                var uEn = hsUsernames.GetEnumerator();
+                var eEn = hsEmails.GetEnumerator();
+
+                while (true)
+                {
+                    var nAvail = nEn.MoveNext();
+                    var uAvail = uEn.MoveNext();
+                    var eAvail = eEn.MoveNext();
+                    if (!nAvail && !uAvail && !eAvail) break;                    
+                    yield return new Alias()
+                    {
+                        Name = nAvail ? nEn.Current : null,
+                        Username = uAvail ? uEn.Current : null,
+                        Email = eAvail ? eEn.Current : null
+                    };
+                }                
+            }            
         }
 
         public void Save()
