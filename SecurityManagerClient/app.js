@@ -54,17 +54,17 @@ function reloadCredShortList(filter = '') {
                 credshortlistdata = data.credShortList;
 
                 let html = '<table class="table table-striped">';
-                html += '<thead><tr>';
-                html += '<th scope="col">Service</th>';
+                html += '<thead><tr>';                
                 html += '<th scope="col">Username</th>';
                 html += '<th scope="col">Email</th>';
+                html += '<th scope="col">Service</th>';
                 html += '</tr></thead>';
                 html += '<tbody>';
                 _.each(_.sortBy(credshortlistdata, (x) => x.name), (x) => {
-                    html += '<tr>';
-                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.name == null) ? '' : x.name) + '</a></td>';
+                    html += '<tr>';                
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.username == null) ? '' : x.username) + '</a></td>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.email == null) ? '' : x.email) + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.name == null) ? '' : x.name) + '</a></td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';
