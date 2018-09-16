@@ -76,6 +76,7 @@ cd ./docker
 
 - prerequisites
   - [nodejs, local web server](https://github.com/devel0/docker-ubuntu/blob/db474a1a65638d42351bbefe318ffc47736b820b/Dockerfile#L21-L26)
+  - bower ( install using `npm install -g bower` )
   - vscode ( suggested [extensions](https://github.com/devel0/knowledge/blob/daea0a3439467e882326ecc3a9e5fbd7d7b17441/tools/vscode-useful-extensions.md) )
   - firefox ( debug [settings](https://github.com/devel0/knowledge/blob/daea0a3439467e882326ecc3a9e5fbd7d7b17441/webdevel/vscode-debug-firefox.md) )
 
@@ -96,12 +97,12 @@ and hit F5 `.NET Core Launch (console)` after Omnisharp initializes
 cd ./SecurityManagerClient
 bower install --allow-root
 code . &
-ws -p 80 --spa index.html
+ws -p 8000 --spa index.html
 ```
 
 and hit F5 `Launch localhost`
 
-- browse http://localhost from opened firefox debug window
+- browse http://localhost:8000 from opened firefox debug window
 
 - notes:
   - breakpoint will work on webapi and client javascript
