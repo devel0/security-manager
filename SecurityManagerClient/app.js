@@ -8,12 +8,6 @@ if (debugmode) {
     pin = sessionStorage.getItem('pin');
 }
 
-// states if editing new or existing
-//let editExistingCred = false;
-
-// used to save existing with new name
-//let credorigname = '';
-
 // used to check changes
 let credorig = null;
 
