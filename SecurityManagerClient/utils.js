@@ -110,6 +110,7 @@ function buildCredObj() {
         Username: $('#cred-username-box')[0].value,
         Email: $('#cred-email-box')[0].value,
         Password: $('#cred-pass-box')[0].value,
+        PasswordRegenLength: $('#cred-password-regen-length-box')[0].value,
         Notes: $('#cred-notes-box')[0].value
     };
 }
@@ -121,6 +122,7 @@ function isEmptyCredObj() {
         $.trim($('#cred-username-box')[0].value) == "" &&
         $.trim($('#cred-email-box')[0].value) == "" &&
         $.trim($('#cred-pass-box')[0].value) == "" &&
+        $.trim($('#cred-password-regen-length-box')[0].value) == "" &&
         $.trim($('#cred-notes-box')[0].value) == "";
 
 }

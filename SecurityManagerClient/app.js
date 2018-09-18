@@ -149,6 +149,7 @@ $('.js-create-btn').click(function (e) {
     $('#cred-username-box')[0].value = '';
     $('#cred-email-box')[0].value = '';
     $('#cred-pass-box')[0].value = '';
+    $('#cred-password-regen-length-box')[0].value = '';
     $('#cred-notes-box')[0].value = '';
 
     gotoState('edit');
@@ -175,6 +176,7 @@ function openCred(e) {
                 $('#cred-username-box')[0].value = data.cred.username;
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
+                $('#cred-password-regen-length-box')[0].value = data.cred.passwordRegenLength;
                 $('#cred-notes-box')[0].value = data.cred.notes;                            
                 $('#cred-create-timestamp')[0].value = (data.cred.createTimestamp != null) ? moment(data.cred.createTimestamp).format('l LT') : "";
                 $('#cred-modify-timestamp')[0].value = (data.cred.modifyTimestamp != null) ? moment(data.cred.modifyTimestamp).format('l LT') : "";
@@ -242,7 +244,7 @@ $('#pwd-regen-btn').click(function (e) {
 
     $.post(
         urlbase + '/Api/RandomPassword',
-        { password: pwd, pin: pin },
+        { password: pwd, pin: pin, length: $('#cred-password-regen-length-box')[0].value },
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
             if (checkApiInvalidAuth(data)) showPart('.js-login');

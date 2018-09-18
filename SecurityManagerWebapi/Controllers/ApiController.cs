@@ -66,7 +66,7 @@ namespace SecurityManagerWebapi.Controllers
         {
             try
             {
-                if (!CheckAuth(password, pin)) return InvalidAuthResponse();                
+                if (!CheckAuth(password, pin)) return InvalidAuthResponse();
 
                 config.SaveCred(cred);
 
@@ -79,7 +79,7 @@ namespace SecurityManagerWebapi.Controllers
         }
 
         [HttpPost]
-        public CommonResponse RandomPassword(string password, int pin)
+        public CommonResponse RandomPassword(string password, int pin, int length)
         {
             try
             {
@@ -87,7 +87,11 @@ namespace SecurityManagerWebapi.Controllers
 
                 var res = new RandomPasswordResponse();
 
-                res.Password = Util.RandomPassword();
+                res.Password = Util.RandomPassword(new Util.RandomPasswordOptions()
+                {
+                    Length = length,
+                    AvoidChars = new[] { 'I', 'l', '0', 'O' }
+                });
 
                 return res;
             }
@@ -122,7 +126,7 @@ namespace SecurityManagerWebapi.Controllers
         {
             try
             {
-                if (!CheckAuth(password, pin)) return InvalidAuthResponse();                
+                if (!CheckAuth(password, pin)) return InvalidAuthResponse();
 
                 config.DeleteCred(guid);
 
@@ -184,7 +188,7 @@ namespace SecurityManagerWebapi.Controllers
             {
                 return ErrorResponse(ex.Message);
             }
-        }        
+        }
 
     }
 }

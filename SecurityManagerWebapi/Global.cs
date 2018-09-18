@@ -77,6 +77,13 @@ namespace SecurityManagerWebapi
                 {
                     if (string.IsNullOrEmpty(x.GUID)) x.GUID = Guid.NewGuid().ToString("N");
                     if (x.CreateTimestamp == null) x.CreateTimestamp = DateTime.UtcNow;
+                    if (x.PasswordRegenLength == 0)
+                    {
+                        if (!string.IsNullOrEmpty(x.Password))
+                            x.PasswordRegenLength = x.Password.Length;
+                        else
+                            x.PasswordRegenLength = 11;
+                    }
                 }
             }
         }
