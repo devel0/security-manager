@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using SearchAThing.NETCoreUtil;
+using SearchAThing.Util;
 
 namespace SecurityManagerWebapi
 {
