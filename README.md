@@ -50,7 +50,10 @@ Webapi + webapp personal wallet cloud
 
 ## prerequisites
 
+- build [ubuntu bionic](https://github.com/devel0/docker-ubuntu/tree/bionic)
 - build [dotnet bionic](https://github.com/devel0/docker-dotnet/blob/bionic/README.md)
+
+note: to build `bionic` branch of prerequisites docker, after clone, exec `git checkout bionic`
 
 ## setup
 
@@ -228,6 +231,34 @@ server {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         }
 }
+```
+
+## firewall rules
+
+if using [fw.sh](https://github.com/devel0/linux-scripts-utils/blob/master/fw.sh) insert follow rules (replacing net_sec0, ip_sec0_srv accordingly to your [docker network](https://github.com/devel0/knowledge/blob/master/linux/quick-and-dirty-server-install-notes.md#create-docker-networks)):
+
+```sh
+net_sec0="10.10.0.56/30"
+
+ip_sec0_srv="10.10.0.58"
+
+if_dksec0=$(dk-if sec0)
+
+comment="http nginx -> sec0 (80,5000)"
+accept FORWARD-2 -i $if_dknginx -o $if_dksec0 -s $ip_nginx_srv -d $ip_sec0_srv -p tcp -m multiport --dports $svc_http,5000
+
+#============
+# dksec0
+#============
+
+comment="dns from sec0 to dns (udp)"
+accept FORWARD-2 -i $if_dksec0 -o $if_dkdns -s $ip_sec0_srv -d $ip_dns_srv -p udp --dport $svc_dns
+
+comment="dns from sec0 to dns (tcp)"
+accept FORWARD-2 -i $if_dksec0 -o $if_dkdns -s $ip_sec0_srv -d $ip_dns_srv -p tcp --dport $svc_dns
+
+comment="http(s) from sec0"
+accept FORWARD-2 -i $if_dksec0 -s $ip_sec0_srv -p tcp -m multiport --dports $svc_http,$svc_https
 ```
 
 ## install execution example
