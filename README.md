@@ -25,7 +25,7 @@ Webapi + webapp personal wallet cloud
 - don't want your password stored into external cloud
   - have your own server with
     - nginx https ( [letsencrypt](https://letsencrypt.org/) ) valid certificate
-    - docker container in separate dedicated network space (/30) with custom firewall rules
+    - docker container in separate dedicated network space (/30) with [custom firewall rules](https://github.com/devel0/linux-scripts-utils/blob/master/fw.sh)
 - use of firefox browser ( browser password stored local and synced between your device, not device-cloud ; must backup your data )
 - on your palm device access through browser https to the wallet with
   - password ( real random ) to protect against internet face ( browser can store that password )
@@ -45,7 +45,7 @@ Webapi + webapp personal wallet cloud
 - filter list credentials by any field ( note included )
 - edit credential ( add, edit, remove ) with changes detect and warn on unsave when close
 - password copy to clipboard
-- password regenerate
+- password regenerate ( allow to set password length foreach record avoiding ambiguous chars 'I', 'l', '0', 'O' )
 
 ## todo
 
