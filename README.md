@@ -9,7 +9,6 @@ Webapi + webapp personal wallet cloud
   * [motivations and architecture overview](#motivations-and-architecture-overview)
   * [screenshoots](#screenshoots)
   * [features](#features)
-  * [todo](#todo)
   * [prerequisites](#prerequisites)
   * [setup](#setup)
   * [debug](#debug)
@@ -18,6 +17,7 @@ Webapi + webapp personal wallet cloud
     + [js ( client )](#js--client-)
     + [docker ( container )](#docker--container-)
   * [nginx config example](#nginx-config-example)
+  * [firewall rules](#firewall-rules)
   * [install execution example](#install-execution-example)
 
 ## motivations and architecture overview
