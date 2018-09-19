@@ -43,10 +43,13 @@ namespace SecurityManagerWebapi.Controllers
 
         bool CheckAuth(string password, int pin)
         {
+            var inCredentials = config.Credentials.FirstOrDefault(w => w.Name == "Security Manager");
+
             var is_valid = !string.IsNullOrEmpty(config?.AdminPassword) &&
                             config.Pin != 0 &&
-                            config?.AdminPassword == password &&
-                            config.Pin == pin;
+                            (inCredentials != null && inCredentials.Password == password && inCredentials.Pin == pin)
+                            ||
+                            (inCredentials == null && config?.AdminPassword == password && config.Pin == pin);
 
             if (!is_valid)
             {
@@ -91,6 +94,30 @@ namespace SecurityManagerWebapi.Controllers
                 {
                     Length = length,
                     AvoidChars = new[] { 'I', 'l', '0', 'O' }
+                });
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return ErrorResponse(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public CommonResponse RandomPin(string password, int pin, int length)
+        {
+            try
+            {
+                if (!CheckAuth(password, pin)) return InvalidAuthResponse();
+
+                var res = new RandomPasswordResponse();
+
+                res.Password = Util.RandomPassword(new Util.RandomPasswordOptions()
+                {
+                    Length = length,
+                    AtLeastOneUppercase = false,
+                    AllowLetter = false
                 });
 
                 return res;

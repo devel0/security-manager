@@ -46,10 +46,7 @@ Webapi + webapp personal wallet cloud
 - edit credential ( add, edit, remove ) with changes detect and warn on unsave when close
 - password copy to clipboard
 - password regenerate
-
-## todo
-
-- password features per entry ( max length, characters, etc ) that influence item regenerate password function
+- change master password, pin by editing "Security Manager" account
 
 ## prerequisites
 

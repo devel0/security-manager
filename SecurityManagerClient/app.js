@@ -54,17 +54,17 @@ function reloadCredShortList(filter = '') {
                 credshortlistdata = data.credShortList;
 
                 let html = '<table class="table table-striped">';
-                html += '<thead><tr>';               
-                html += '<th scope="col">Service</th>'; 
+                html += '<thead><tr>';
+                html += '<th scope="col">Service</th>';
                 html += '<th scope="col">Username</th>';
-                html += '<th scope="col">Email</th>';                
+                html += '<th scope="col">Email</th>';
                 html += '</tr></thead>';
                 html += '<tbody>';
                 _.each(_.sortBy(credshortlistdata, (x) => x.name), (x) => {
-                    html += '<tr>';                
+                    html += '<tr>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.name == null) ? '' : x.name) + '</a></td>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.username == null) ? '' : x.username) + '</a></td>';
-                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.email == null) ? '' : x.email) + '</a></td>';                    
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.email == null) ? '' : x.email) + '</a></td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';
@@ -176,8 +176,9 @@ function openCred(e) {
                 $('#cred-username-box')[0].value = data.cred.username;
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
+                $('#cred-pin-box')[0].value = data.cred.pin;
                 $('#cred-password-regen-length-box')[0].value = data.cred.passwordRegenLength;
-                $('#cred-notes-box')[0].value = data.cred.notes;                            
+                $('#cred-notes-box')[0].value = data.cred.notes;
                 $('#cred-create-timestamp')[0].value = (data.cred.createTimestamp != null) ? moment(data.cred.createTimestamp).format('l LT') : "";
                 $('#cred-modify-timestamp')[0].value = (data.cred.modifyTimestamp != null) ? moment(data.cred.modifyTimestamp).format('l LT') : "";
 
@@ -188,7 +189,7 @@ function openCred(e) {
             else {
                 $.notify('invalid login', 'error');
                 pin = '';
-            }                    
+            }
         });
 
     return false;
@@ -213,7 +214,7 @@ $('.js-cred-save-btn').click(function (e) {
             if (checkApiError(data)) return;
             if (checkApiInvalidAuth(data)) showPart('.js-login');
             else {
-                aliases.push( {
+                aliases.push({
                     name: $('#cred-name-box')[0].value,
                     username: $('#cred-username-box')[0].value,
                     email: $('#cred-email-box')[0].value
@@ -248,7 +249,29 @@ $('#pwd-regen-btn').click(function (e) {
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
             if (checkApiInvalidAuth(data)) showPart('.js-login');
-            else ctl[0].value = data.password;
+            else {
+                if ($('#cred-name-box')[0].value == "Security Manager") {
+                    let ctl1 = $('#cred-pin-box');
+
+                    ctl1[0].value = 'generating...';
+
+                    let tmppwd = data.password;
+                    $.post(
+                        urlbase + '/Api/RandomPin',
+                        { password: pwd, pin: pin, length: 4 },
+                        function (data, status, jqXHR) {
+                            if (checkApiError(data)) return;
+                            if (checkApiInvalidAuth(data)) showPart('.js-login');
+                            else {
+                                ctl[0].value = tmppwd;
+                                ctl1[0].value = data.password;
+                            }
+                        }
+                    );
+                }
+                else
+                    ctl[0].value = data.password;
+            }
         }
     );
 });

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using static System.Environment;
 
@@ -72,7 +73,20 @@ namespace SecurityManagerWebapi
                 var attrs = File.GetAttributes(AppConfigPathfilename);
                 Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(AppConfigPathfilename));
 
-                // backward : ensure guid, createtimestamp
+                // backward : ensure securitymanager account
+                if (!Config.Credentials.Any(w => w.Name == "Security Manager"))
+                {
+                    Config.Credentials.Add(new CredInfo()
+                    {
+                        Name = "Security Manager",
+                        Password = Config.AdminPassword,
+                        Pin = Config.Pin,
+                        CreateTimestamp = DateTime.UtcNow,
+                        GUID = Guid.NewGuid().ToString("N")
+                    });
+                }
+
+                // backward : ensure guid, createtimestamp, passwordregenlength
                 foreach (var x in Config.Credentials)
                 {
                     if (string.IsNullOrEmpty(x.GUID)) x.GUID = Guid.NewGuid().ToString("N");
@@ -84,7 +98,7 @@ namespace SecurityManagerWebapi
                         else
                             x.PasswordRegenLength = 11;
                     }
-                }
+                }                
             }
         }
 

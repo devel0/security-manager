@@ -15,6 +15,10 @@ namespace SecurityManagerWebapi
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }        
+        /// <summary>
+        /// used to store Security Manager pin
+        /// </summary>        
+        public int Pin { get; set; }
         public int PasswordRegenLength { get; set; }
         public string Notes { get; set; }
 

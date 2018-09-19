@@ -7,6 +7,10 @@ function gotoState(newstate) {
         case 'login': showPart('.js-login'); break;
         case 'edit':
             {
+                if ($('#cred-name-box')[0].value == "Security Manager")
+                    $('.js-pin-div').removeClass('collapse'); else
+                    $('.js-pin-div').addClass('collapse');
+
                 showPart('.js-cred-edit'); $('#cred-name-box').focus();
 
                 if (!completion_connected) {
@@ -25,7 +29,7 @@ function gotoState(newstate) {
                     new Awesomplete($('#cred-email-box')[0], {
                         minChars: 1,
                         list: _.map(_.filter(aliases, (x) => x.email != null), (x) => x.email)
-                    });                    
+                    });
                 }
             }
             break;
@@ -98,7 +102,10 @@ function checkPin() {
 // handle pin
 for (i = 0; i <= 9; ++i) {
     let x = i;
-    $('#pin' + x + '-btn').click(function (e) { pin += new String(x); checkPin(); });
+    $('#pin' + x + '-btn').click(function (e) {
+        if (pin.length == 4) pin = '';
+        pin += new String(x); checkPin();
+    });
 }
 
 // buildCredObj
@@ -110,6 +117,7 @@ function buildCredObj() {
         Username: $('#cred-username-box')[0].value,
         Email: $('#cred-email-box')[0].value,
         Password: $('#cred-pass-box')[0].value,
+        Pin: $('#cred-pin-box')[0].value,
         PasswordRegenLength: $('#cred-password-regen-length-box')[0].value,
         Notes: $('#cred-notes-box')[0].value
     };
@@ -122,6 +130,7 @@ function isEmptyCredObj() {
         $.trim($('#cred-username-box')[0].value) == "" &&
         $.trim($('#cred-email-box')[0].value) == "" &&
         $.trim($('#cred-pass-box')[0].value) == "" &&
+        $.trim($('#cred-pin-box')[0].value) == "" &&
         $.trim($('#cred-password-regen-length-box')[0].value) == "" &&
         $.trim($('#cred-notes-box')[0].value) == "";
 
