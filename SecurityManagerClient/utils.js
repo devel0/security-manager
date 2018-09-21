@@ -103,6 +103,7 @@ function checkPin() {
 for (i = 0; i <= 9; ++i) {
     let x = i;
     $('#pin' + x + '-btn').click(function (e) {
+        if (pin == null) pin = '';
         if (pin.length == 4) pin = '';
         pin += new String(x); checkPin();
     });

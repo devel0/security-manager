@@ -133,14 +133,14 @@
             <div class="col">
               <input type="text" id="cred-pass-box" style="width:100%" />
             </div>
-          </div>          
+          </div>
           <div class="row">
             <div class="col">
               <button type="button" class="btn btn-primary mt-1 js-pwd-clip" data-clipboard-target="#cred-pass-box">
                 <i class="fas fa-clipboard"></i> Copy to clipboard</button>
               <button type="button" class="btn btn-primary mt-1" id='pwd-regen-btn'>
                 <i class="fas fa-recycle"></i> Regenerate</button>
-                Length:
+              Length:
               <input type="text" id="cred-password-regen-length-box" style="width:50px" />
             </div>
           </div>
@@ -159,7 +159,7 @@
             <div class="col">
               <input type="text" id="cred-pin-box" style="width:100%" minlength="4" maxlength="4" />
             </div>
-          </div>                    
+          </div>
         </div>
       </div>
 
@@ -209,6 +209,7 @@
           <h2>Login</h2>
           <form id='login-form'>
             <div class="form-group">
+              <input type="hidden" id="login-username-box" value="admin"/>
               <label for="login-password-box">Password</label>
               <input type="password" class="form-control" id="login-password-box" placeholder="Password" />
             </div>
