@@ -86,6 +86,8 @@ namespace SecurityManagerWebapi.Controllers
         {
             try
             {
+                if (length == 0) length = 8;
+
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
 
                 var res = new RandomPasswordResponse();
@@ -109,6 +111,8 @@ namespace SecurityManagerWebapi.Controllers
         {
             try
             {
+                if (length == 0) length = 4;
+
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
 
                 var res = new RandomPasswordResponse();

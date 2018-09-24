@@ -149,7 +149,7 @@ $('.js-create-btn').click(function (e) {
     $('#cred-username-box')[0].value = '';
     $('#cred-email-box')[0].value = '';
     $('#cred-pass-box')[0].value = '';
-    $('#cred-password-regen-length-box')[0].value = '';
+    $('#cred-password-regen-length-box')[0].value = '8';
     $('#cred-notes-box')[0].value = '';
 
     gotoState('edit');
