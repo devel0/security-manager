@@ -6,9 +6,8 @@
     "configurations": [        
         {
             "name": "Launch localhost",
-            "type": "firefox",
-            "request": "launch",
-            "reAttach": true,
+            "type": "chrome",
+            "request": "launch",            
             "url": "http://localhost:8000/index.html",
             "webRoot": "${workspaceFolder}"
         }
