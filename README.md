@@ -16,7 +16,7 @@ Webapi + webapp personal wallet cloud
     + [webapi ( server )](#webapi--server-)
     + [js ( client )](#js--client-)
     + [docker ( container )](#docker--container-)
-  * [nginx config example](#nginx-config-example)
+  * [nginx config](#nginx-config)
   * [firewall rules](#firewall-rules)
   * [install execution example](#install-execution-example)
 
