@@ -16,7 +16,7 @@ Webapi + webapp personal wallet cloud
     + [webapi ( server )](#webapi--server-)
     + [js ( client )](#js--client-)
     + [docker ( container )](#docker--container-)
-  * [nginx config example](#nginx-config-example)
+  * [nginx config](#nginx-config)
   * [firewall rules](#firewall-rules)
   * [install execution example](#install-execution-example)
 
@@ -158,80 +158,9 @@ and hit F5 `Launch localhost`
 | [run.sh](docker/run.sh) | create docker container |
 | [entrypoint.sh](docker/entrypoint.sh) | every restart entry script that compile and install first time from source distro into binary and that start local web server + webapi server everytime |
 
-## nginx config example
+## nginx config
 
-- `/etc/nginx/nginx.conf`
-
-```
-events
-{
-}
-
-http {
-        index index.html;
-
-        # comment follow line to decrease warning log to only show errors
-        error_log /var/log/nginx/error.log warn;
-        
-        client_max_body_size 5120M;
-        proxy_connect_timeout 1600;
-        proxy_send_timeout 1600;
-        proxy_read_timeout 1600;
-        send_timeout 1600;
-
-        server {
-                listen 80 default_server;
-                listen [::]:80 default_server;
-                server_name _;
-                rewrite ^ https://$host$request_uri? permanent;
-        }
-
-        ssl_certificate /etc/ssl/certs/searchathing.com.crt;
-        ssl_certificate_key /etc/ssl/private/searchathing.com.key;
-        ssl_protocols TLSv1.2;
-
-        server {
-                listen 443 ssl default_server;
-                listen [::]:443 ssl default_server;
-
-                root /var/www/html;
-
-                server_name searchathing.com www.searchathing.com;
-
-                location / {
-#                       try_files $uri $uri/;
-                        access_log /logs/web_access.log;
-                }
-        }
-
-        include /etc/nginx/conf.d/*.conf;
-}
-```
-
-- `/etc/nginx/conf.d/sec0.conf`
-
-```
-server {
-        listen 443 ssl;
-        listen [::]:443 ssl;
-
-        root /var/www/html;
-
-        server_name sec0.searchathing.com;
-
-        location / {
-                proxy_set_header Host $host;
-                proxy_pass http://10.10.0.58:80;
-        }
-
-        location ~ /Api/(?<ns>.*) {
-                proxy_set_header Host $host;
-                proxy_pass http://10.10.0.58:5000/Api/$ns;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        }
-}
-```
+- [example](https://github.com/devel0/knowledge/blob/d997a40cfba5fda2fbc99fec672594b3d40ce18f/webdevel/nginx-webapi-conf.md)
 
 ## firewall rules
 
