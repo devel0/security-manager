@@ -164,7 +164,7 @@ and hit F5 `Launch localhost`
 
 ## firewall rules
 
-if using [fw.sh](https://github.com/devel0/linux-scripts-utils/blob/master/fw.sh) insert follow rules (replacing net_sec0, ip_sec0_srv accordingly to your [docker network](https://github.com/devel0/knowledge/blob/master/linux/quick-and-dirty-server-install-notes.md#create-docker-networks)):
+if using [fw.sh](https://github.com/devel0/linux-scripts-utils/blob/master/fw.sh) insert follow rules (replacing net_sec0, ip_sec0_srv accordingly to your [docker network](https://github.com/devel0/knowledge/blob/master/doc/quick-and-dirty-server-install-notes.md#create-docker-networks)):
 
 ```sh
 net_sec0="10.10.0.56/30"
