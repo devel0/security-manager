@@ -56,13 +56,13 @@ function togglePwdShow() {
 }
 
 $('.js-pwd-clip').click((e) => {
-    togglePwdShow();
+    pwdShow();
 });
 
 // handle password clipboard
 var clipboard = new ClipboardJS('.js-pwd-clip');
 clipboard.on('success', (e) => {
-    togglePwdShow();
+    pwdHide();
 });
 
 //----------------
