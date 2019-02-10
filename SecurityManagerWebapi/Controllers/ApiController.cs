@@ -74,9 +74,11 @@ namespace SecurityManagerWebapi.Controllers
             try
             {
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
-
-                var dbCredLvl = config.Credentials.First(w => w.GUID == cred.GUID).Level;
+                
                 var curLvl = CurrentLevel(password, pin);
+                var dbCredLvl = curLvl;
+                var q0 = config.Credentials.FirstOrDefault(w => w.GUID == cred.GUID);                                
+                if (q0 != null) dbCredLvl = q0.Level;
 
                 var canEditLevel =
                     curLvl == 99 || // superuser

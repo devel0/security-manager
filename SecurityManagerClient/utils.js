@@ -91,6 +91,7 @@ function checkPin() {
                 if (checkApiSuccessful(data)) {
                     $.notify('logged in', 'success');
                     savePassword();
+                    current_level = data.currentLevel;
                     showPart('.js-main');
                     reloadCredShortList();
                     reloadAliases();
