@@ -48,12 +48,12 @@ Webapi + webapp personal wallet cloud
 - change master password, pin by editing "Security Manager" account
 - password regenerate ( allow to set password length foreach record avoiding ambiguous chars 'I', 'l', '0', 'O' )
 - security manager levels ( server side filtered and authorized )
- - initial superuser with lvl 99
- - other Security Manager user can be created with lower levels
- - if logged in user have lvl below 99
-  - can't see records with higher level
-  - can't change existing record levels
-  - can create record only with its own level
+  - initial superuser with lvl 99
+  - other Security Manager user can be created with lower levels
+  - if logged in user have lvl below 99
+    - can't see records with higher level
+    - can't change existing record levels
+    - can create record only with its own level
 
 ## prerequisites
 
