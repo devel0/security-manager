@@ -35,8 +35,35 @@ window.onpopstate = function (e) {
     }
 }
 
+function pwdShow() {
+    let q = $('#show-hide-pwd-msg');
+    $('#cred-pass-box').removeClass('collapse');
+    q[0].innerText = "Hide";
+}
+
+function pwdHide() {
+    let q = $('#show-hide-pwd-msg');
+    $('#cred-pass-box').addClass('collapse');
+    q[0].innerText = "Show";
+}
+
+function togglePwdShow() {
+    let q = $('#show-hide-pwd-msg');
+    if (q[0].innerText == "Show")
+        pwdShow();
+    else
+        pwdHide();
+}
+
+$('.js-pwd-clip').click((e) => {
+    togglePwdShow();
+});
+
 // handle password clipboard
-new ClipboardJS('.js-pwd-clip');
+var clipboard = new ClipboardJS('.js-pwd-clip');
+clipboard.on('success', (e) => {
+    togglePwdShow();
+});
 
 //----------------
 // LOAD CRED LIST
@@ -146,7 +173,7 @@ $('.js-create-btn').click(function (e) {
     $('#cred-link-box')[0].value = '';
     $('#cred-username-box')[0].value = '';
     $('#cred-email-box')[0].value = '';
-    $('#cred-pass-box')[0].value = '';    
+    $('#cred-pass-box')[0].value = '';
     $('#cred-password-regen-length-box')[0].value = '8';
     $('#cred-notes-box')[0].value = '';
     $('#cred-lvl-box')[0].value = current_level;
@@ -322,6 +349,10 @@ $.post(
         }
     }
 );
+
+$('.j-btn-show-pwd').click((e) => {
+    togglePwdShow();
+});
 
 // tryDiscardEdit
 function tryDiscardEdit() {

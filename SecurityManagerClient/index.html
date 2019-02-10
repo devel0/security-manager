@@ -131,7 +131,9 @@
         <div class="col">
           <div class="row">
             <div class="col">
-              <input type="text" id="cred-pass-box" style="width:100%" />
+              <input type="text" id="cred-pass-box" class="collapse" style="width:70%" />
+              <button class="btn btn-link j-btn-show-pwd">
+                <i class="fas fa-eye"></i><span class="ml-1" id='show-hide-pwd-msg'>Show</span></button>
             </div>
           </div>
           <div class="row">
@@ -148,7 +150,7 @@
       </div>
 
       <!-- Pin -->
-      <div class="row mt-2 js-pin-div collapse">        
+      <div class="row mt-2 js-pin-div collapse">
         <div class="col-4 text-right">
           <label>
             <b>Pin</b>
@@ -156,8 +158,8 @@
         </div>
         <div class="col">
           <div class="row">
-            <div class="col">              
-              <input type="text" id="cred-pin-box" style="width:100%" minlength="4" maxlength="4" />              
+            <div class="col">
+              <input type="text" id="cred-pin-box" style="width:100%" minlength="4" maxlength="4" />
             </div>
           </div>
         </div>
@@ -167,8 +169,8 @@
       <div class="row mt-2 js-lvl-div">
         <div class="col-4 text-right">
           <label>
-            <b>Level</b>   
-            <i class="fas fa-shield-alt ml-3"></i>         
+            <b>Level</b>
+            <i class="fas fa-shield-alt ml-3"></i>
         </div>
         <div class="col">
           <div class="row">
@@ -225,10 +227,10 @@
           <h2>Login</h2>
           <form id='login-form'>
             <div class="form-group">
-              <input type="text" name="username" value="admin" hidden/>
+              <input type="text" name="username" value="admin" hidden />
               <label for="login-password-box">Password</label>
               <input type="password" class="form-control" id="login-password-box" name="password" placeholder="Password" />
-            </div>            
+            </div>
           </form>
         </div>
       </div>
@@ -240,7 +242,7 @@
         <div class="col">
           <i><span class="collapse" id='pin-key-tip'>Hit TAB key to insert pin by keyboard</span></i></br>
           <label for="pin-box">Pin</label>
-          <label id="pin-mask"></label>          
+          <label id="pin-mask"></label>
         </div>
       </div>
       <div class="row">
