@@ -10,9 +10,9 @@ function gotoState(newstate) {
         case 'edit':
             {
                 if ($('#cred-name-box')[0].value == "Security Manager") {
-                    $('.js-pin-div').removeClass('collapse');                    
+                    $('.js-pin-div').removeClass('collapse');
                 } else {
-                    $('.js-pin-div').addClass('collapse');                    
+                    $('.js-pin-div').addClass('collapse');
                 }
 
                 showPart('.js-cred-edit');$('#cred-name-box').focus();
@@ -113,6 +113,23 @@ for (i = 0; i <= 9; ++i) {
         checkPin();
     });
 }
+
+$('#login-password-box').focusin(() => {
+    $('#pin-key-tip').removeClass('collapse');
+});
+
+$('#login-password-box').focusout(() => {
+    $('#pin-key-tip').addClass('collapse');
+});
+
+document.addEventListener('keydown', function (e) {
+    if (state == 'login' && !$('#login-password-box').is(':focus') && "0123456789".indexOf(e.key) != -1) {
+        if (pin == null) pin = '';
+        if (pin.length == 4) pin = '';
+        pin += new String(e.key);
+        checkPin();
+    }
+});
 
 // buildCredObj
 function buildCredObj() {
