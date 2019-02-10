@@ -33,6 +33,7 @@ namespace SecurityManagerWebapi
                     cred.Email = cred.Email?.Trim();
                     cred.Password = cred.Password?.Trim();
                     cred.Pin = cred.Pin;
+                    cred.Level = cred.Level;
                     cred.PasswordRegenLength = cred.PasswordRegenLength;
                     cred.CreateTimestamp = DateTime.UtcNow;
 
@@ -50,10 +51,11 @@ namespace SecurityManagerWebapi
                     q.Email = cred.Email?.Trim();
                     q.Password = cred.Password?.Trim();
                     q.Pin = cred.Pin;
+                    q.Level = cred.Level;
                     q.PasswordRegenLength = cred.PasswordRegenLength;
                     q.Notes = cred.Notes;
                     q.ModifyTimestamp = DateTime.UtcNow;
-                }                
+                }
             }
             Save();
         }
@@ -79,7 +81,7 @@ namespace SecurityManagerWebapi
             }
         }
 
-        public List<CredShort> GetCredShortList(string filter)
+        public List<CredShort> GetCredShortList(string filter, int lvl)
         {
             List<CredShort> res;
 
@@ -87,22 +89,22 @@ namespace SecurityManagerWebapi
 
             lock (lck)
             {
-                res = Credentials.Where(r => new[] { r.Name, r.Url, r.Username, r.Email, r.Notes }.MatchesFilter(filter))
-                .Select(w => new CredShort() { GUID = w.GUID, Name = w.Name, Username = w.Username, Email = w.Email, Url = w.Url })
+                res = Credentials.Where(r => new[] { r.Name, r.Url, r.Username, r.Email, r.Notes }.MatchesFilter(filter) && r.Level <= lvl)
+                .Select(w => new CredShort() { GUID = w.GUID, Name = w.Name, Username = w.Username, Email = w.Email, Url = w.Url, Level = w.Level })
                 .ToList();
             }
 
             return res;
         }
 
-        public IEnumerable<Alias> GetAliases()
-        {            
+        public IEnumerable<Alias> GetAliases(int curLvl)
+        {
             lock (lck)
             {
                 var hsNames = new HashSet<string>();
                 var hsUsernames = new HashSet<string>();
                 var hsEmails = new HashSet<string>();
-                foreach (var x in Credentials)
+                foreach (var x in Credentials.Where(r => r.Level <= curLvl))
                 {
                     hsNames.Add(x.Name);
                     hsUsernames.Add(x.Username);
@@ -118,15 +120,15 @@ namespace SecurityManagerWebapi
                     var nAvail = nEn.MoveNext();
                     var uAvail = uEn.MoveNext();
                     var eAvail = eEn.MoveNext();
-                    if (!nAvail && !uAvail && !eAvail) break;                    
+                    if (!nAvail && !uAvail && !eAvail) break;
                     yield return new Alias()
                     {
                         Name = nAvail ? nEn.Current : null,
                         Username = uAvail ? uEn.Current : null,
                         Email = eAvail ? eEn.Current : null
                     };
-                }                
-            }            
+                }
+            }
         }
 
         public void Save()

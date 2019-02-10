@@ -9,6 +9,7 @@ namespace SecurityManagerWebapi
         public string Username { get; set; }
         public string Email { get; set; }
         public string Url { get; set; }
+        public int Level { get; set; }
 
     }
 

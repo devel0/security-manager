@@ -3,6 +3,7 @@ debugmode = true; // set to false from entrypoint
 
 pwd = '';
 pin = '';
+current_level = 0;
 if (debugmode) {
     pwd = sessionStorage.getItem('password');
     pin = sessionStorage.getItem('pin');
@@ -42,8 +43,7 @@ new ClipboardJS('.js-pwd-clip');
 //----------------
 function reloadCredShortList(filter = '') {
     showPart('.js-main');
-    $.post(urlbase + '/Api/CredShortList',
-        {
+    $.post(urlbase + '/Api/CredShortList', {
             password: pwd,
             pin: pin,
             filter: filter
@@ -58,20 +58,21 @@ function reloadCredShortList(filter = '') {
                 html += '<th scope="col">Service</th>';
                 html += '<th scope="col">Username</th>';
                 html += '<th scope="col">Email</th>';
+                html += '<th scope="col">Lvl<i class="fas fa-shield-alt ml-3"></i></th>';
                 html += '</tr></thead>';
                 html += '<tbody>';
-                _.each(_.sortBy(credshortlistdata, (x) => x.name), (x) => {
+                _.each(_.sortBy(_.sortBy(credshortlistdata, (x) => x.name), (x) => x.level), (x) => {
                     html += '<tr>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.name == null) ? '' : x.name) + '</a></td>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.username == null) ? '' : x.username) + '</a></td>';
                     html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.email == null) ? '' : x.email) + '</a></td>';
+                    html += '<td><a href="#edit" onclick="openCred(\'' + x.guid + '\');">' + ((x.level == null) ? '' : x.level) + '</a></td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';
                 html += '</table>';
                 $('#cred-short-list').html(html);
-            }
-            else {
+            } else {
                 $.notify('invalid login', 'error');
                 pin = '';
             }
@@ -82,8 +83,7 @@ function reloadCredShortList(filter = '') {
 // LOAD ALIASES
 //--------------
 function reloadAliases() {
-    $.post(urlbase + '/Api/Aliases',
-        {
+    $.post(urlbase + '/Api/Aliases', {
             password: pwd,
             pin: pin
         },
@@ -91,8 +91,7 @@ function reloadAliases() {
             if (checkApiError(data)) return;
             if (checkApiSuccessful(data)) {
                 aliases = data.aliases;
-            }
-            else {
+            } else {
                 $.notify('invalid login', 'error');
                 pin = '';
             }
@@ -112,8 +111,7 @@ function doFilter() {
         filterTimer = setTimeout(function () {
             reloadCredShortList(filter);
         }, 250);
-    }
-    else {
+    } else {
         reloadCredShortList(filter);
         ctl.removeClass('filter-active');
     }
@@ -149,8 +147,11 @@ $('.js-create-btn').click(function (e) {
     $('#cred-username-box')[0].value = '';
     $('#cred-email-box')[0].value = '';
     $('#cred-pass-box')[0].value = '';
+    $('#cred-lvl-box')[0].value = '1';
     $('#cred-password-regen-length-box')[0].value = '8';
     $('#cred-notes-box')[0].value = '';
+    $('#cred-lvl-box')[0].value = current_level;
+    $('#cred-lvl-box').attr('readonly', current_level != 99);
 
     gotoState('edit');
 });
@@ -161,8 +162,7 @@ $('.js-create-btn').click(function (e) {
 function openCred(e) {
     let guid = e;
 
-    $.post(urlbase + '/Api/LoadCred',
-        {
+    $.post(urlbase + '/Api/LoadCred', {
             password: pwd,
             pin: pin,
             guid: guid
@@ -170,6 +170,8 @@ function openCred(e) {
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
             if (checkApiSuccessful(data)) {
+                $('#cred-lvl-box').attr('readonly', current_level != 99);
+
                 $('#cred-guid')[0].value = data.cred.guid;
                 $('#cred-name-box')[0].value = data.cred.name;
                 $('#cred-link-box')[0].value = data.cred.url;
@@ -177,6 +179,7 @@ function openCred(e) {
                 $('#cred-email-box')[0].value = data.cred.email;
                 $('#cred-pass-box')[0].value = data.cred.password;
                 $('#cred-pin-box')[0].value = data.cred.pin;
+                $('#cred-lvl-box')[0].value = data.cred.level;
                 $('#cred-password-regen-length-box')[0].value = data.cred.passwordRegenLength;
                 $('#cred-notes-box')[0].value = data.cred.notes;
                 $('#cred-create-timestamp')[0].value = (data.cred.createTimestamp != null) ? moment(data.cred.createTimestamp).format('l LT') : "";
@@ -185,8 +188,7 @@ function openCred(e) {
                 credorig = JSON.stringify(buildCredObj());
 
                 gotoState('edit');
-            }
-            else {
+            } else {
                 $.notify('invalid login', 'error');
                 pin = '';
             }
@@ -205,9 +207,9 @@ $('.js-cred-save-btn').click(function (e) {
     }
 
     $.post(
-        urlbase + '/Api/SaveCred',
-        {
-            password: pwd, pin: pin,
+        urlbase + '/Api/SaveCred', {
+            password: pwd,
+            pin: pin,
             cred: buildCredObj()
         },
         function (data, status, jqXHR) {
@@ -244,8 +246,11 @@ $('#pwd-regen-btn').click(function (e) {
     ctl[0].value = 'generating...';
 
     $.post(
-        urlbase + '/Api/RandomPassword',
-        { password: pwd, pin: pin, length: $('#cred-password-regen-length-box')[0].value },
+        urlbase + '/Api/RandomPassword', {
+            password: pwd,
+            pin: pin,
+            length: $('#cred-password-regen-length-box')[0].value
+        },
         function (data, status, jqXHR) {
             if (checkApiError(data)) return;
             if (checkApiInvalidAuth(data)) showPart('.js-login');
@@ -257,8 +262,11 @@ $('#pwd-regen-btn').click(function (e) {
 
                     let tmppwd = data.password;
                     $.post(
-                        urlbase + '/Api/RandomPin',
-                        { password: pwd, pin: pin, length: 4 },
+                        urlbase + '/Api/RandomPin', {
+                            password: pwd,
+                            pin: pin,
+                            length: 4
+                        },
                         function (data, status, jqXHR) {
                             if (checkApiError(data)) return;
                             if (checkApiInvalidAuth(data)) showPart('.js-login');
@@ -268,8 +276,7 @@ $('#pwd-regen-btn').click(function (e) {
                             }
                         }
                     );
-                }
-                else
+                } else
                     ctl[0].value = data.password;
             }
         }
@@ -282,9 +289,9 @@ $('#pwd-regen-btn').click(function (e) {
 $('.js-cred-delete-btn').click(function (e) {
     if (confirm('sure to delete ?')) {
         $.post(
-            urlbase + '/Api/DeleteCred',
-            {
-                password: pwd, pin: pin,
+            urlbase + '/Api/DeleteCred', {
+                password: pwd,
+                pin: pin,
                 guid: $('#cred-guid')[0].value
             },
             function (data, status, jqXHR) {
@@ -301,13 +308,16 @@ $('.js-cred-delete-btn').click(function (e) {
 
 // check if login required
 $.post(
-    urlbase + '/Api/IsAuthValid',
-    { password: pwd, pin: pin },
+    urlbase + '/Api/IsAuthValid', {
+        password: pwd,
+        pin: pin
+    },
     function (data, status, jqXHR) {
         if (checkApiError(data)) return;
         if (checkApiInvalidAuth(data))
             gotoState('login');
         else {
+            current_level = data.currentLevel;
             reloadAliases();
             reloadCredShortList();
         }

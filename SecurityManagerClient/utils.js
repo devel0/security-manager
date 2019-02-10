@@ -4,14 +4,18 @@ completion_connected = false;
 function gotoState(newstate) {
     state = newstate;
     switch (state) {
-        case 'login': showPart('.js-login'); break;
+        case 'login':
+            showPart('.js-login');
+            break;
         case 'edit':
             {
-                if ($('#cred-name-box')[0].value == "Security Manager")
-                    $('.js-pin-div').removeClass('collapse'); else
-                    $('.js-pin-div').addClass('collapse');
+                if ($('#cred-name-box')[0].value == "Security Manager") {
+                    $('.js-pin-div').removeClass('collapse');                    
+                } else {
+                    $('.js-pin-div').addClass('collapse');                    
+                }
 
-                showPart('.js-cred-edit'); $('#cred-name-box').focus();
+                showPart('.js-cred-edit');$('#cred-name-box').focus();
 
                 if (!completion_connected) {
                     completion_connected = true;
@@ -33,7 +37,9 @@ function gotoState(newstate) {
                 }
             }
             break;
-        case 'list': showPart('.js-main'); break;
+        case 'list':
+            showPart('.js-main');
+            break;
     }
 }
 
@@ -76,8 +82,7 @@ function checkPin() {
     if (pin.length >= 4) {
         pwd = $('#login-password-box')[0].value;
 
-        $.post(urlbase + '/Api/IsAuthValid',
-            {
+        $.post(urlbase + '/Api/IsAuthValid', {
                 password: pwd,
                 pin: pin
             },
@@ -89,8 +94,7 @@ function checkPin() {
                     showPart('.js-main');
                     reloadCredShortList();
                     reloadAliases();
-                }
-                else {
+                } else {
                     $.notify('invalid login', 'error');
                     pin = '';
                     $('#pin-mask').text("");
@@ -105,7 +109,8 @@ for (i = 0; i <= 9; ++i) {
     $('#pin' + x + '-btn').click(function (e) {
         if (pin == null) pin = '';
         if (pin.length == 4) pin = '';
-        pin += new String(x); checkPin();
+        pin += new String(x);
+        checkPin();
     });
 }
 
@@ -119,6 +124,7 @@ function buildCredObj() {
         Email: $('#cred-email-box')[0].value,
         Password: $('#cred-pass-box')[0].value,
         Pin: $('#cred-pin-box')[0].value,
+        Level: $('#cred-lvl-box')[0].value,
         PasswordRegenLength: $('#cred-password-regen-length-box')[0].value,
         Notes: $('#cred-notes-box')[0].value
     };
@@ -132,6 +138,7 @@ function isEmptyCredObj() {
         $.trim($('#cred-email-box')[0].value) == "" &&
         $.trim($('#cred-pass-box')[0].value) == "" &&
         $.trim($('#cred-pin-box')[0].value) == "" &&
+        $.trim($('#cred-lvl-box')[0].value) == '' &&
         $.trim($('#cred-password-regen-length-box')[0].value) == "" &&
         $.trim($('#cred-notes-box')[0].value) == "";
 

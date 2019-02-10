@@ -41,14 +41,18 @@ namespace SecurityManagerWebapi.Controllers
             };
         }
 
+        int CurrentLevel(string password, int pin)
+        {
+            return config.Credentials.Where(w => w.Name == "Security Manager" && w.Password == password && w.Pin == pin).OrderByDescending(w => w.Level).First().Level;
+        }
+
         bool CheckAuth(string password, int pin)
         {
-            var inCredentials = config.Credentials.FirstOrDefault(w => w.Name == "Security Manager");
+            var inCredentials = config.Credentials.FirstOrDefault(w => w.Name == "Security Manager" && w.Password == password && w.Pin == pin);
 
             var is_valid = !string.IsNullOrEmpty(config?.AdminPassword) &&
                             config.Pin != 0 &&
-                            (inCredentials != null && inCredentials.Password == password && inCredentials.Pin == pin)
-                            ||
+                            inCredentials != null ||
                             (inCredentials == null && config?.AdminPassword == password && config.Pin == pin);
 
             if (!is_valid)
@@ -70,6 +74,16 @@ namespace SecurityManagerWebapi.Controllers
             try
             {
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
+
+                var dbCredLvl = config.Credentials.First(w => w.GUID == cred.GUID).Level;
+                var curLvl = CurrentLevel(password, pin);
+
+                var canEditLevel =
+                    curLvl == 99 || // superuser
+                    (string.IsNullOrEmpty(cred.GUID) && cred.Level >= curLvl) || // can't create lower level sec credentials
+                    (!string.IsNullOrEmpty(cred.GUID) && cred.Level == dbCredLvl); // can't change existing item level
+
+                if (!canEditLevel) return InvalidAuthResponse();
 
                 config.SaveCred(cred);
 
@@ -143,6 +157,7 @@ namespace SecurityManagerWebapi.Controllers
                 var response = new CredInfoResponse();
 
                 response.Cred = config.LoadCred(guid);
+                if (response.Cred.Level > CurrentLevel(password, pin)) return InvalidAuthResponse(); // can't access higher level of credentials
 
                 return response;
             }
@@ -158,6 +173,9 @@ namespace SecurityManagerWebapi.Controllers
             try
             {
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
+
+                var q = config.LoadCred(guid);
+                if (q.Level > CurrentLevel(password, pin)) return InvalidAuthResponse(); // can't access higher level of credentials
 
                 config.DeleteCred(guid);
 
@@ -178,7 +196,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var response = new CredShortListResponse();
 
-                response.CredShortList = config.GetCredShortList(filter);
+                response.CredShortList = config.GetCredShortList(filter, CurrentLevel(password, pin));
 
                 return response;
             }
@@ -197,7 +215,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var response = new AliasResponse();
 
-                response.Aliases = config.GetAliases().ToList();
+                response.Aliases = config.GetAliases(CurrentLevel(password, pin)).ToList();
 
                 return response;
             }
@@ -213,7 +231,9 @@ namespace SecurityManagerWebapi.Controllers
             try
             {
                 if (!CheckAuth(password, pin)) return InvalidAuthResponse();
-                return SuccessfulResponse();
+                var res = new AuthResponse();
+                res.currentLevel = CurrentLevel(password, pin);
+                return res;
             }
             catch (Exception ex)
             {

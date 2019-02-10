@@ -19,6 +19,10 @@ namespace SecurityManagerWebapi
         /// used to store Security Manager pin
         /// </summary>        
         public int Pin { get; set; }
+        /// <summary>
+        /// entries with level greater than Security Manager logged in user not accessible
+        /// </summary>        
+        public int Level { get; set; }
         public int PasswordRegenLength { get; set; }
         public string Notes { get; set; }
 

@@ -82,11 +82,16 @@ namespace SecurityManagerWebapi
                         Password = Config.AdminPassword,
                         Pin = Config.Pin,
                         CreateTimestamp = DateTime.UtcNow,
-                        GUID = Guid.NewGuid().ToString("N")
+                        GUID = Guid.NewGuid().ToString("N"),
+                        Level = 99
                     });
                 }
 
-                // backward : ensure guid, createtimestamp, passwordregenlength
+                var q = Config.Credentials.Where(w => w.Name == "Security Manager");
+                if (q.Count() == 1)
+                    q.First().Level = 99;
+
+                // backward : ensure guid, createtimestamp, passwordregenlength, level
                 foreach (var x in Config.Credentials)
                 {
                     if (string.IsNullOrEmpty(x.GUID)) x.GUID = Guid.NewGuid().ToString("N");
@@ -98,7 +103,9 @@ namespace SecurityManagerWebapi
                         else
                             x.PasswordRegenLength = 11;
                     }
-                }                
+                    if (x.Level == 0)
+                        x.Level = 1;
+                }
             }
         }
 
