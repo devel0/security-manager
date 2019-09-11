@@ -1,9 +1,13 @@
 #!/bin/bash
 
+source ~/.bashrc
+
+echo "PATH is [$PATH]"
+
+cat ~/.bashrc
+
 #URLBASE="https://sec0.searchathing.com"
 #URLBASE="https://sec1.searchathing.com"
-
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 replace_token_with()
 {
@@ -33,7 +37,7 @@ if [ ! -e /root/.initialized ]; then
 	echo "---> building web api server"
 	echo
 	cd /opt/securitymanager/SecurityManagerWebapi
-	dotnet clean .
+	rm -fr obj bin
 	dotnet restore .
 	dotnet build -c Release .
 

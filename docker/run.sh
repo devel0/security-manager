@@ -29,7 +29,7 @@ echo "urlbase [$urlbase]"
 dbfile=$(cat "$cfg" | jq -r ".security_dbfile")
 echo "dbfile [$dbfile]"
 
-container_image=searchathing/dotnet:bionic
+container_image=searchathing/dotnet:server-mgr
 cpus="2"
 memory="256m"
 
@@ -59,7 +59,6 @@ docker run \
 	-ti \
 	--name="$container" \
 	--network="$net" \
-	--ip="$ip" \
 	-e URLBASE="$urlbase" \
 	--restart="unless-stopped" \
 	-e DOTNET_CLI_TELEMETRY_OPTOUT=1 \
