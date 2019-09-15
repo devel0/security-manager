@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using SearchAThing;
 using SearchAThing.Util;
 
 namespace SecurityManagerWebapi.Controllers
@@ -108,7 +109,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var res = new RandomPasswordResponse();
 
-                res.Password = Util.RandomPassword(new Util.RandomPasswordOptions()
+                res.Password = Toolkit.RandomPassword(new RandomPasswordOptions
                 {
                     Length = length,
                     AvoidChars = new[] { 'I', 'l', '0', 'O' }
@@ -133,7 +134,7 @@ namespace SecurityManagerWebapi.Controllers
 
                 var res = new RandomPasswordResponse();
 
-                res.Password = Util.RandomPassword(new Util.RandomPasswordOptions()
+                res.Password = Toolkit.RandomPassword(new RandomPasswordOptions
                 {
                     Length = length,
                     AtLeastOneUppercase = false,

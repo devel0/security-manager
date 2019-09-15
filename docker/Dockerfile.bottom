@@ -1,0 +1,17 @@
+RUN echo && \
+        echo "---> setup webapi url to [$URLBASE]" && \
+        echo && \
+        appjs=/opt/securitymanager/SecurityManagerClient/app.js && \
+        cat "$appjs" | \
+                dotnet /opt/securitymanager/replace-token-with/bin/Debug/netcoreapp2.0/replace-token-with.dll "urlbase = 'http://localhost:5000'" "urlbase = '$URLBASE'" | \
+                dotnet /opt/securitymanager/replace-token-with/bin/Debug/netcoreapp2.0/replace-token-with.dll "debugmode = true;" "debugmode = false;" \
+                > /tmp/x && mv -f /tmp/x "$appjs"
+
+RUN /root/app-builder.sh
+
+COPY entrypoint.sh /entrypoint.d/start.sh
+
+ENTRYPOINT [ "/root/run-entrypoints.sh" ]
+
+CMD /bin/bash
+

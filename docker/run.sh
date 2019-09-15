@@ -47,6 +47,16 @@ fi
 
 chmod 600 "$dbfile"
 
+mkdir -p "$exdir"/src-copy
+rsync -arvx --delete --exclude=docker "$exdir"/../ "$exdir"/src-copy/
+
+echo "# DO NOT EDIT THIS = AUTOMATICALLY GENERATED" > "$exdir"/Dockerfile
+cat "$exdir"/Dockerfile.top >> "$exdir"/Dockerfile
+echo "ENV URLBASE=$urlbase" >> "$exdir"/Dockerfile
+cat "$exdir"/Dockerfile.bottom >> "$exdir"/Dockerfile
+
+docker build -t $container -f "$exdir"/Dockerfile "$exdir"/.
+
 echo
 echo "---> removing previous container if exists"
 echo
@@ -54,19 +64,16 @@ echo
 docker stop "$container"
 docker rm "$container"
 
-docker run \
-	-d \
+docker run -d \
+         --name="$container" \
+         -h "$container" \
+         --cpus="$cpus" \
+         --memory="$memory" \
+         --restart=unless-stopped \
 	-ti \
-	--name="$container" \
 	--network="$net" \
-	-e URLBASE="$urlbase" \
-	--restart="unless-stopped" \
-	-e DOTNET_CLI_TELEMETRY_OPTOUT=1 \
 	--volume="$exdir/entrypoint.sh:/entrypoint.d/start.sh" \
-	--volume="$exdir/..:/usr/src/securitymanager" \
 	--volume="$dbfile:/root/.config/securitymanager/config.json" \
-	--cpus="$cpus" \
-	--memory="$memory" \
-	"$container_image"
+	"$container"
 
 docker logs -f "$container"

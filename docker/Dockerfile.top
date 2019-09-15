@@ -1,0 +1,14 @@
+FROM searchathing/dotnet:3.0-preview9
+
+COPY src-copy /opt/securitymanager
+
+COPY app-builder.sh /root
+RUN chmod +x /root/app-builder.sh
+
+RUN /root/app-builder.sh
+
+RUN echo && \
+        echo "---> building replace-token-with utility" && \
+        echo && \
+        dotnet build /opt/securitymanager/replace-token-with
+
