@@ -60,11 +60,6 @@ mkdir -p "$exdir"/src-copy
 rsync -arvx --delete --exclude=docker "$exdir"/../ "$exdir"/src-copy/
 echo "$urlbase" > "$exdir"/src-copy/urlbase
 
-#echo "# DO NOT EDIT THIS = AUTOMATICALLY GENERATED" > "$exdir"/Dockerfile
-#cat "$exdir"/top.Dockerfile >> "$exdir"/Dockerfile
-#echo "ENV URLBASE=$urlbase" >> "$exdir"/Dockerfile
-#cat "$exdir"/bottom.Dockerfile >> "$exdir"/Dockerfile
-
 docker build -t $container -f "$exdir"/Dockerfile "$exdir"/.
 
 if [ "$?" != 0 ]; then
