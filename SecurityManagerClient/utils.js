@@ -92,7 +92,8 @@ function checkPin() {
                     $.notify('logged in', 'success');
                     savePassword();
                     current_level = data.currentLevel;
-                    showPart('.js-main');
+		    gotoState('list');
+//                    showPart('.js-main');
                     reloadCredShortList();
                     reloadAliases();
                 } else {
