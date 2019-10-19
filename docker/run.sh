@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(which jq)" == "" ]; then
+	echo "please install jq"
+	exit 1
+fi
+
 executing_dir()
 {
         dirname `readlink -f "$0"`
@@ -9,6 +14,11 @@ exdir=$(executing_dir)
 
 if [ "$1" == "" ]; then
 	echo "specify a config file"
+	exit 1
+fi
+
+if [ ! -e "$1" ]; then
+	echo "[$1] conf file not exists"
 	exit 1
 fi
 
@@ -29,7 +39,6 @@ echo "urlbase [$urlbase]"
 dbfile=$(cat "$cfg" | jq -r ".security_dbfile")
 echo "dbfile [$dbfile]"
 
-container_image=searchathing/dotnet:server-mgr
 cpus="2"
 memory="256m"
 
@@ -49,20 +58,29 @@ chmod 600 "$dbfile"
 
 mkdir -p "$exdir"/src-copy
 rsync -arvx --delete --exclude=docker "$exdir"/../ "$exdir"/src-copy/
+echo "$urlbase" > "$exdir"/src-copy/urlbase
 
-echo "# DO NOT EDIT THIS = AUTOMATICALLY GENERATED" > "$exdir"/Dockerfile
-cat "$exdir"/Dockerfile.top >> "$exdir"/Dockerfile
-echo "ENV URLBASE=$urlbase" >> "$exdir"/Dockerfile
-cat "$exdir"/Dockerfile.bottom >> "$exdir"/Dockerfile
+#echo "# DO NOT EDIT THIS = AUTOMATICALLY GENERATED" > "$exdir"/Dockerfile
+#cat "$exdir"/top.Dockerfile >> "$exdir"/Dockerfile
+#echo "ENV URLBASE=$urlbase" >> "$exdir"/Dockerfile
+#cat "$exdir"/bottom.Dockerfile >> "$exdir"/Dockerfile
 
 docker build -t $container -f "$exdir"/Dockerfile "$exdir"/.
+
+if [ "$?" != 0 ]; then
+	echo "fail build image"
+	exit 1
+fi
 
 echo
 echo "---> removing previous container if exists"
 echo
 
-docker stop "$container"
-docker rm "$container"
+q=$(docker ps -a --format "{{.Names}}" | grep ^$container$)
+if [ "$q" != "" ]; then
+	docker stop "$container"
+	docker rm "$container"
+fi
 
 docker run -d \
          --name="$container" \
