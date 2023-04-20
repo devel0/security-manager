@@ -12,7 +12,7 @@ echo "PATH is [$PATH]"
 echo
 echo "---> run webapi server"
 echo
-dotnet /opt/securitymanager/SecurityManagerWebapi/bin/Release/netcoreapp2.0/SecurityManagerWebapi.dll &
+dotnet /opt/securitymanager/SecurityManagerWebapi/bin/Release/net7.0/SecurityManagerWebapi.dll &
 
 echo
 echo "---> run web server"

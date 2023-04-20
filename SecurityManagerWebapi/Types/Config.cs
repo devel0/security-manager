@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using SearchAThing;
+using SearchAThing.Ext;
+using static SearchAThing.Util.Toolkit;
 
 namespace SecurityManagerWebapi
 {
@@ -146,7 +148,7 @@ namespace SecurityManagerWebapi
                 }
                 File.WriteAllText(Global.AppConfigPathfilename, JsonConvert.SerializeObject(this, Formatting.Indented));
                 // save with mode 600
-                LinuxHelper.SetFilePermission(Global.AppConfigPathfilename, 384);
+                SetFilePermission(Global.AppConfigPathfilename, 384);
             }
         }
 

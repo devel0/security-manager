@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using static System.Environment;
 
 namespace SecurityManagerWebapi
 {
@@ -65,7 +60,7 @@ namespace SecurityManagerWebapi
             else
             {
                 // check mode 600
-                if (!LinuxHelper.IsFilePermissionSafe(AppConfigPathfilename, 384))
+                if (!IsFilePermissionSafe(AppConfigPathfilename, 384))
                 {
                     throw new Exception($"invalid file permission [{AppConfigPathfilename}] must set to 700");
                 }

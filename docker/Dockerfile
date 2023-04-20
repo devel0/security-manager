@@ -1,13 +1,13 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 
 ENV PATH="/root/.dotnet/tools:$PATH"
 
-# install nodejs 10
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+# install nodejs 14
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 
 # install shu
-RUN dotnet tool install --global shu --version 0.0.6
+RUN dotnet tool install --global shu --version 0.8.0
 
 # install bower
 RUN echo "installing local web server" && \
